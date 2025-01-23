@@ -11,6 +11,7 @@ class Router
 	 */
 	public function execute($routes)
 	{
+
 		// tries to find the route and run the given action on the controller
 		try {
 			// the controller and action to execute
@@ -59,8 +60,7 @@ class Router
 	protected function _getUri()
 	{
 		$uri = explode('?',$_SERVER['REQUEST_URI']);
-		$uri = $uri[0];
-		$uri = substr($uri, strlen(WEB_ROOT));
+		$uri = substr($uri[0], strlen(WEB_ROOT));
 		
 		return $uri;
 	}
@@ -168,6 +168,7 @@ class Router
 	 */
 	protected function _initializeController($name)
 	{
+
 		// initializes the controller
 		$controller = ucfirst($name) . 'Controller';
 		// constructs the controller

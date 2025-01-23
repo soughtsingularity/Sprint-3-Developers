@@ -1,0 +1,6 @@
+{
+    "require": {
+        "illuminate/support": "^11.39",
+        "mongodb/mongodb": "^1.15"
+    }
+}

@@ -7,3 +7,4 @@
   RewriteRule ^.*$ - [NC,L]
   RewriteRule ^.*$ index.php [NC,L]
 </IfModule>
+
