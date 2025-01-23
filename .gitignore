@@ -1,0 +1,49 @@
+# Laravel & PHP Defaults
+/vendor/
+/node_modules/
+/public/storage
+/storage/*.key
+.env
+.phpunit.result.cache
+
+# Logs and temporary files
+/storage/logs/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/cache/*
+/storage/debugbar/*
+!.gitignore
+
+
+# System Files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*.idea
+*.vscode
+*.bak
+
+# Composer & npm Lock Files
+composer.lock
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Backup Files
+*.log
+*.tmp
+*.backup
+*.bak
+
+# Testing-related
+/.phpunit.result.cache
+/tests/_output/
+/tests/_support/_generated/
+
+# Markdown Presentations
+!*.md
+
+# Ignorar rutas de gitignore en caso de incluir ejemplos específicos
+!.gitignore
+
