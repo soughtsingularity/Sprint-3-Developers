@@ -49,16 +49,15 @@
           <input required id="taskName" type="text" placeholder="Ingrese el nombre de la tarea"
             class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
         </div>
-        <div>
-          <label for="status" class="block text-sm font-medium text-gray-400">Usuario</label>
-          <select id="status" required
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-            <option value="" class="text-gray-400">Seleccione un estado</option>
-            <option value="pendiente">alguien@gmail.com</option>
-            <option value="en_progreso">alguien2@gmail.com</option>
-            <option value="completado">alguien3@gmail.com</option>
-          </select>
-        </div>
+        <div class="mb-4">
+  <label class="block text-gray-400">Estado</label>
+  <select name="task_status" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
+    <option value="">Seleccione un estado</option>
+    <option value="completed">Completada</option>
+    <option value="in_progress">En progreso</option>
+    <option value="pending">Pendiente</option>
+  </select>
+</div>
         <div>
           <label for="startDate" class="block text-sm font-medium text-gray-400">Fecha de inicio</label>
           <input required id="startDate" type="date"
@@ -70,13 +69,12 @@
             class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
         </div>
         <div>
-          <label for="status" class="block text-sm font-medium text-gray-400">Estado</label>
-          <select id="status" required
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-            <option value="" class="text-gray-400">Seleccione un estado</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="en_progreso">En Progreso</option>
-            <option value="completado">Completado</option>
+          <label for="status" class="block text-sm font-medium text-gray-400">Reasignar a</label>
+          <select name="task_assigned_to" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
+            <option value="">Seleccione un usuario</option>
+            <?php foreach ($this->users as $user): ?>
+              <option value="<?= $user['email'] ?>"><?= $user['email'] ?></option>
+            <?php endforeach; ?>
           </select>
         </div>
         <div class="text-center">

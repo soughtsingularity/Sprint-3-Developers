@@ -8,16 +8,17 @@ class UserController extends Controller {
         $this->userRepository = $userRepository;
     }
 
+
     public function registerAction() {
         $email = $this->_getParam('email');
-
+    
         // Validar el email
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->userRepository->save($email);
         }
-
+    
         // Redirigir siempre a la lista de tareas
         header("Location: " . WEB_ROOT . "/index.php/tasks/list");
-        exit();
+        exit();        exit();
     }
 }

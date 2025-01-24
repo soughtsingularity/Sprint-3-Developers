@@ -1,19 +1,14 @@
 <?php
 
 class TaskController extends Controller {
+
     public function listAction() {
         $this->view->title = "Lista de Tareas";
-        $this->view->message = "Aquí están todas tus tareas pendientes.";
     }
 
     public function addAction(){
-        $this->view->title = "Añadir Tarea";
-        $this->view->message = "Aquí se añaden tareas.";
 
-        require_once __DIR__ . '/../repositories/Users/UserRepositoryJson.php';
-
-        $userRepository = new UserRepositoryJson();
-    
+        $userRepository = UserRepositoryJson::getInstance();
         $this->view->users = $userRepository->getAll();
     }
 

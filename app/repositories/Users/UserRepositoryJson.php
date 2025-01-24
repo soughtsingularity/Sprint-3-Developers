@@ -16,11 +16,10 @@ class UserRepositoryJson implements UserRepositoryInterface {
         }
     }
 
-    public static function getInstance(){
-        if(self::$_instance == null){
+    public static function getInstance() {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
     }
 
@@ -54,9 +53,17 @@ class UserRepositoryJson implements UserRepositoryInterface {
     }
 
     public function getAll() {
-        $data = $this->readData();
+        $data = json_decode(file_get_contents($this->filePath), true);
+    
+        if (!is_array($data)) {
+            return [];  // Devuelve un array vacío si los datos no son válidos
+        }
+    
+        // Verifica si cada elemento tiene la clave 'email'
         return array_map(function($user) {
-            return $user['email'];
+            return [
+                'email' => isset($user['email']) ? $user['email'] : 'undefined'
+            ];
         }, $data);
     }
 
