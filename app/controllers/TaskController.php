@@ -8,7 +8,13 @@ class TaskController extends Controller {
 
     public function addAction(){
         $this->view->title = "Añadir Tarea";
-        $this->view->message = "Aqui se añaden tareas.";
+        $this->view->message = "Aquí se añaden tareas.";
+
+        require_once __DIR__ . '/../repositories/Users/UserRepositoryJson.php';
+
+        $userRepository = new UserRepositoryJson();
+    
+        $this->view->users = $userRepository->getAll();
     }
 
     public function editAction(){

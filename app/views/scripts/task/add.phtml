@@ -51,13 +51,18 @@
         </div>
         <div>
           <label for="status" class="block text-sm font-medium text-gray-400">Usuario</label>
-          <select id="status" required
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-            <option value="" class="text-gray-400">Seleccione un usuario</option>
-            <option value="pendiente">alguien@gmail.com</option>
-            <option value="en_progreso">alguien2@gmail.com</option>
-            <option value="completado">alguien3@gmail.com</option>
-          </select>
+          <?php global $users; ?>
+<select id="user" required class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+    <option value="" class="text-gray-400">Seleccione un usuario</option>
+    <?php if (isset($users) && !empty($users)): ?>
+        <?php foreach ($users as $user): ?>
+            <option value="<?= htmlspecialchars($user) ?>"><?= htmlspecialchars($user) ?></option>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <option value="" class="text-red-400">No hay usuarios disponibles</option>
+    <?php endif; ?>
+</select>
+
         </div>
         <div>
           <label for="startDate" class="block text-sm font-medium text-gray-400">Fecha de inicio</label>

@@ -24,8 +24,9 @@ class UserRepositoryJson implements UserRepositoryInterface {
         return self::$_instance;
     }
 
-    private function readData(){
-        return json_decode(file_get_contents($this->filePath), true);
+    private function readData() {
+        $content = file_get_contents($this->filePath);
+        return json_decode($content, true);
     }
 
     private function writeData($data){
@@ -52,8 +53,11 @@ class UserRepositoryJson implements UserRepositoryInterface {
         return $newUser['id'];
     }
 
-    public function getAll(){
-        return $this->readData();
+    public function getAll() {
+        $data = $this->readData();
+        return array_map(function($user) {
+            return $user['email'];
+        }, $data);
     }
 
     public function findById($id){

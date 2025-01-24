@@ -82,8 +82,10 @@ require_once __DIR__ . '/../lib/base/Router.php';
 require_once __DIR__ . '/../app/repositories/Users/UserRepositoryJson.php';
 require_once __DIR__ . '/../app/controllers/UserController.php';
 
-// Inicialización
 $userRepository = UserRepositoryJson::getInstance();
+
+$users = $userRepository->getAll();
+
 $controller = new UserController($userRepository);
 
 $router = new Router();
