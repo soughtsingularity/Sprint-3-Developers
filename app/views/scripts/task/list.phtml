@@ -8,81 +8,136 @@
 </head>
 <body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
 
-  <!-- Header fijo arriba -->
   <header class="bg-gray-800 py-4 shadow-md w-full fixed top-0 z-50">
     <div class="container mx-auto flex items-center justify-center gap-8 px-6">
-        <!-- Botón Home -->
-        <button 
-        onclick="window.location.href='<?php echo WEB_ROOT; ?>/index.php/tasks/list';"
+      
+      <button 
+        onclick="window.location.href='<?= htmlspecialchars(WEB_ROOT); ?>/index.php/tasks/list';"
         class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-            Home
-        </button>
+        Home
+      </button>
 
-                <!-- Botón Nuevo Usuario -->
-        <button 
-        onclick="window.location.href='<?php echo WEB_ROOT;?>/';"
+      <button 
+        onclick="window.location.href='<?= htmlspecialchars(WEB_ROOT); ?>/';"
         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-            Nuevo usuario en el equipo
-        </button>
+        Nuevo usuario en el equipo
+      </button>
 
-        <!-- Input de búsqueda centrado -->
-        <div class="flex-1 max-w-md">
-            <input 
-                type="text" 
-                placeholder="Buscar tarea" 
-                class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
-            >
-        </div>
+      <div class="flex-1 max-w-md">
+        <input 
+          type="text" 
+          placeholder="Buscar tarea" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
+        >
+      </div>
+
     </div>
   </header>
 
-  <!-- Contenedor principal centrado con espacio desde el header -->
   <div class="flex flex-1 items-center justify-center pt-24">
     <div class="container max-w-3xl w-full bg-gray-800 shadow-lg rounded-lg p-8">
+
+      <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
+          <?= $_SESSION['success_message']; ?>
+        </div>
+        <?php unset($_SESSION['success_message']); ?>
+      <?php endif; ?>
+
+      <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
+          <?= $_SESSION['error_message']; ?>
+        </div>
+        <?php unset($_SESSION['error_message']); ?>
+      <?php endif; ?>
+
       <div class="border-b border-gray-600 pb-4 mb-6 text-center">
         <h1 class="text-3xl font-bold text-gray-100">Lista de Tareas</h1>
       </div>
+
       <div class="space-y-4">
-        <div class="flex items-center bg-gray-700 rounded-md p-4 shadow-sm gap-4">
-          <div class="flex-1">
-            <h2 class="text-lg font-semibold text-gray-300">Finalizar reporte de ventas</h2>
-            <p class="text-gray-400 text-sm">Fecha de inicio: <span class="text-gray-300">28 de enero, 2025</span></p>
-            <p class="text-gray-400 text-sm">Fecha de entrega: <span class="text-gray-300">25 de enero, 2025</span></p>
-          </div>
-          <h2 class="text-lg font-semibold text-gray-300">alguien2@gmail.com</h2>
-          <span class="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded-md">Pendiente</span>
-          <button class="px-3 py-1 text-sm font-medium bg-blue-500 text-gray-900 rounded-md">Editar</button>
-        </div>
-        <div class="flex items-center bg-gray-700 rounded-md p-4 shadow-sm gap-4">
-          <div class="flex-1">
-            <h2 class="text-lg font-semibold text-gray-300">Revisión de código</h2>
-            <p class="text-gray-400 text-sm">Fecha de inicio: <span class="text-gray-300">28 de enero, 2025</span></p>
-            <p class="text-gray-400 text-sm">Fecha de entrega: <span class="text-gray-300">28 de enero, 2025</span></p>
-          </div>
-          <h2 class="text-lg font-semibold text-gray-300">alguien@gmail.com</h2>
-          <span class="px-3 py-1 text-sm font-medium bg-yellow-500 text-gray-900 rounded-md">En progreso</span>
-          <button class="px-3 py-1 text-sm font-medium bg-blue-500 text-gray-900 rounded-md">Editar</button>
-        </div>
-        <div class="flex items-center bg-gray-700 rounded-md p-4 shadow-sm gap-4">
-          <div class="flex-1">
-            <h2 class="text-lg font-semibold text-gray-300">Actualización del sistema</h2>
-            <p class="text-gray-400 text-sm">Fecha de inicio: <span class="text-gray-300">28 de enero, 2025</span></p>
-            <p class="text-gray-400 text-sm">Fecha de entrega: <span class="text-gray-300">30 de enero, 2025</span></p>
-          </div>
-          <h2 class="text-lg font-semibold text-gray-300">alguien2@gmail.com</h2>
-          <span class="px-3 py-1 text-sm font-medium bg-green-600 text-white rounded-md">Completado</span>
-          <button class="px-3 py-1 text-sm font-medium bg-blue-500 text-gray-900 rounded-md">Editar</button>
-        </div>
+        <?php 
+          $tasks = (array) $this->tasks; 
+          if (count($tasks) > 0): 
+        ?>
+          <?php foreach ($tasks as $task): ?>
+            <div class="bg-gray-700 rounded-md p-4 shadow-sm">
+
+              <!-- Primera fila: Nombre de la tarea y Estado -->
+              <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold text-gray-300">
+                  <?= htmlspecialchars($task['name'] ?? 'Sin nombre') ?>
+                </h2>
+                <span class="px-3 py-1 text-sm font-medium rounded-md 
+                  <?php 
+                    switch ($task['status']) {
+                      case 'pending': echo 'bg-red-600 text-white'; break;
+                      case 'in_progress': echo 'bg-yellow-500 text-gray-900'; break;
+                      case 'completed': echo 'bg-green-600 text-white'; break;
+                      default: echo 'bg-gray-500 text-white'; 
+                    }
+                  ?>">
+                  <?= htmlspecialchars($task['status'] ?? 'Desconocido') ?>
+                </span>
+              </div>
+
+              <!-- Segunda fila: Fechas y usuario asignado -->
+              <div class="flex justify-between mb-2">
+                <div>
+                  <p class="text-gray-400 text-sm">Fecha de inicio:</p>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['start_date'] ?? 'N/A') ?></span>
+                </div>
+                <div>
+                  <p class="text-gray-400 text-sm">Fecha de entrega:</p>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['due_date'] ?? 'N/A') ?></span>
+                </div>
+                <h2 class="text-lg font-semibold text-gray-300">
+                  <?= htmlspecialchars($task['assigned_to'] ?? 'Sin asignar') ?>
+                </h2>
+              </div>
+
+              <!-- Tercera fila: Botones de acción -->
+              <div class="flex justify-end gap-2">
+                <a href="<?= WEB_ROOT ?>/index.php/tasks/edit?id=<?= urlencode($task['id']) ?>" 
+                   class="px-3 py-1 text-sm font-medium bg-blue-500 text-gray-900 rounded-md">
+                  Editar
+                </a>
+                <a href="<?= WEB_ROOT ?>/index.php/tasks/delete?id=<?= urlencode($task['id']) ?>" 
+                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')"
+                   class="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded-md">
+                  Eliminar
+                </a>
+              </div>
+
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p class="text-gray-500 text-center">No hay tareas registradas.</p>
+        <?php endif; ?>
       </div>
+
       <div class="text-center mt-6">
         <button 
-        onclick="window.location.href='<?php echo WEB_ROOT;?>/index.php/tasks/add';"
-        class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
+          onclick="window.location.href='<?= htmlspecialchars(WEB_ROOT); ?>/index.php/tasks/add';"
+          class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
           Añadir Nueva Tarea
         </button>
       </div>
+
     </div>
   </div>
 
+  <script>
+  setTimeout(() => {
+      const successMessage = document.querySelector('.bg-green-500');
+      if (successMessage) {
+          successMessage.style.display = 'none';
+      }
+  }, 2000);
+</script>
+
 </body>
 </html>
+
+
+

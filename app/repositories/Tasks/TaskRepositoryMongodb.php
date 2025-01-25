@@ -1,48 +1,44 @@
 <?php 
 
-require 'vendor/autoload.php';
-
 use MongoDB\Client;
-use App\Repositories\TaskRepositoryInterface;
-use MongoDB\BSON\ObjectId;
-
 
 class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
     private static $_instance = null;
     protected $collection;
 
-    public function __construct($table) {
+    public function __construct() {
         $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
         $client = new Client($settings['mongodb']['uri']);
-        $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])->selectCollection($table);
+        $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
+        ->selectCollection('tasks');    
     }
     
-    public function getInstance(){
-        if(self::$_instance ==null){
+    public static function getInstance(){
+        if(self::$_instance === null){
             self::$_instance = new self();
         }
 
         return self::$_instance->collection;
     }
 
-    public function showAll(){
+    public function getAll(){
         
     }
 
-    public function fetchOne($id) {
-        return $this->collection->findOne(['_id' => new \MongoDB\BSON\ObjectId($id)]);
+    public function fetchOne($name) {
+        return $this->collection->findOne(['name' => new \MongoDB\BSON\ObjectId($name)]);
     }
 
     public function save(array $data) {
         if (isset($data['id'])) {
             $this->collection->updateOne(
-                ['_id' => new \MongoDB\BSON\ObjectId($data['id'])],
+                ['id' => new \MongoDB\BSON\ObjectId($data['id'])],
                 ['$set' => $data]
             );
         } else {
             $this->collection->insertOne($data);
-            return (string)$data['_id'];
+            return (string)$data['id'];
         }
     }
 

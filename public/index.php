@@ -38,6 +38,8 @@ spl_autoload_register(function ($className) {
 	$repositoryPaths = [
         __DIR__ . '/../app/repositories/' . $className . '.php',
         __DIR__ . '/../app/repositories/Users/' . $className . '.php', 
+        __DIR__ . '/../app/repositories/Tasks/' . $className . '.php', 
+
     ];
 
     foreach ($repositoryPaths as $file) {
@@ -78,6 +80,8 @@ function autoloader($className) {
 require_once __DIR__ . '/../config/routes.php';
 
 require_once __DIR__ . '/../lib/base/Router.php';
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 
 $router = new Router();

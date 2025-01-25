@@ -169,17 +169,18 @@ class Router
 	protected function _initializeController($name)
 	{
 
-		// Inicializa el repositorio de usuarios
-		require_once __DIR__ . '/../../app/repositories/Users/UserRepositoryJson.php';
-		$userRepository = UserRepositoryJson::getInstance();
 
 		// initializes the controller
 		$controller = ucfirst($name) . 'Controller';
 
 		if ($controller === 'UserController') {
+			require_once __DIR__ . '/../../app/repositories/Users/UserRepositoryFactory.php';
+			
+			$userRepository = UserRepositoryFactory::create();
 			return new UserController($userRepository);
 		}
-		// constructs the controller
+	
+		// Construcción genérica de otros controladores
 		return new $controller();
 	}
 }

@@ -51,7 +51,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
         return $statement->fetch(PDO::FETCH_OBJ); 
     }
 
-    public function showAll(){
+    public function getAll(){
         
     }
 

@@ -1,90 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <title>Form Tailwind</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="assets/css/form.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir Tarea</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
-  <!-- Header fijo arriba -->
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+
   <header class="bg-gray-800 py-4 shadow-md w-full fixed top-0 z-50">
     <div class="container mx-auto flex items-center justify-center gap-8 px-6">
-        <!-- Botón Home -->
-        <button 
+      
+      <button 
         onclick="window.location.href='<?php echo WEB_ROOT; ?>/index.php/tasks/list';"
         class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-            Home
-        </button>
+        Home
+      </button>
 
-                <!-- Botón Nuevo Usuario -->
-        <button 
+      <button 
         onclick="window.location.href='<?php echo WEB_ROOT;?>/';"
         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-            Nuevo usuario en el equipo
-        </button>
+        Nuevo usuario en el equipo
+      </button>
 
-        <!-- Input de búsqueda centrado -->
-        <div class="flex-1 max-w-md">
-            <input 
-                type="text" 
-                placeholder="Buscar tarea" 
-                class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
-            >
-        </div>
-    </div>
-</header>
-<body class="app sidebar-mini bg-gray-900 text-gray-200 min-h-screen flex items-center justify-center">
-  <main class="app-content w-full max-w-md">
-    <div class="form-container bg-gray-800 shadow-lg rounded-lg p-8">
-      <div class="app-title mb-6 text-center border-b border-gray-600 pb-4">
-        <h1 class="text-2xl font-bold text-gray-100">Controla2</h1>
+      <div class="flex-1 max-w-md">
+        <input 
+          type="text" 
+          placeholder="Buscar tarea" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none">
       </div>
-      <h1 class="text-xl font-semibold text-center text-gray-300 mb-6">Editar tarea</h1>
-      <form class="space-y-4">
-        <div>
-          <label for="taskName" class="block text-sm font-medium text-gray-400">Nombre de la tarea</label>
-          <input required id="taskName" type="text" placeholder="Ingrese el nombre de la tarea"
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+    </div>
+  </header>
+
+  <div class="flex items-center justify-center h-screen pt-20">
+    <div class="container max-w-lg w-full bg-gray-800 shadow-lg rounded-lg p-8">
+      
+      <?php if (isset($_SESSION['success_message']) && isset($_GET['success'])): ?>
+        <div id="success-message" class="bg-green-600 text-white p-4 rounded-md mb-4 text-center">
+          <?= $_SESSION['success_message']; ?>
         </div>
-        <div class="mb-4">
-  <label class="block text-gray-400">Estado</label>
-  <select name="task_status" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
-    <option value="">Seleccione un estado</option>
-    <option value="completed">Completada</option>
-    <option value="in_progress">En progreso</option>
-    <option value="pending">Pendiente</option>
-  </select>
-</div>
-        <div>
-          <label for="startDate" class="block text-sm font-medium text-gray-400">Fecha de inicio</label>
-          <input required id="startDate" type="date"
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+        <?php unset($_SESSION['success_message']); ?>
+      <?php endif; ?>
+
+      <?php if (isset($_SESSION['error_message']) && isset($_GET['error'])): ?>
+        <div id="error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
+          <?= $_SESSION['error_message']; ?>
         </div>
-        <div>
-          <label for="endDate" class="block text-sm font-medium text-gray-400">Fecha de finalización</label>
-          <input required id="endDate" type="date"
-            class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-        </div>
-        <div>
-          <label for="status" class="block text-sm font-medium text-gray-400">Reasignar a</label>
-          <select name="task_assigned_to" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
+        <?php unset($_SESSION['error_message']); ?>
+      <?php endif; ?>
+
+      <div class="border-b border-gray-600 pb-4 mb-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-100">Editar Tarea</h1>
+      </div>
+
+      <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
+    <!-- Campo oculto para el ID si existe -->
+    <input type="hidden" name="id" value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : ''; ?>">
+
+    <div class="mb-4">
+        <label class="block text-gray-400">Nombre de la tarea</label>
+        <input 
+            type="text" 
+            name="name" 
+            value="<?= isset($this->task['name']) ? htmlspecialchars($this->task['name']) : ''; ?>"
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400" 
+            required>
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-gray-400">Estado</label>
+        <select 
+            name="status" 
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+            required>
+            <option value="">Seleccione un estado</option>
+            <option value="in_progress" <?= isset($this->task['status']) && $this->task['status'] == 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
+            <option value="completed" <?= isset($this->task['status']) && $this->task['status'] == 'completed' ? 'selected' : ''; ?>>Completada</option>
+            <option value="pending" <?= isset($this->task['status']) && $this->task['status'] == 'pending' ? 'selected' : ''; ?>>Pendiente</option>
+        </select>
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-gray-400">Fecha de inicio</label>
+        <input 
+            type="date" 
+            name="start_date" 
+            value="<?= isset($this->task['start_date']) ? htmlspecialchars($this->task['start_date']) : ''; ?>"
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+            required>
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-gray-400">Fecha límite</label>
+        <input 
+            type="date" 
+            name="due_date" 
+            value="<?= isset($this->task['due_date']) ? htmlspecialchars($this->task['due_date']) : ''; ?>"
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+            required>
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-gray-400">Asignado a</label>
+        <select 
+            name="assigned_to" 
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+            required>
             <option value="">Seleccione un usuario</option>
             <?php foreach ($this->users as $user): ?>
-              <option value="<?= $user['email'] ?>"><?= $user['email'] ?></option>
+                <option value="<?= $user['email'] ?>" <?= isset($this->task['assigned_to']) && $this->task['assigned_to'] == $user['email'] ? 'selected' : ''; ?>>
+                    <?= $user['email'] ?>
+                </option>
             <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="text-center">
-          <button type="submit"
-            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-            Guardar
-          </button>
-        </div>
-      </form>
+        </select>
     </div>
-  </main>
+
+    <button type="submit" 
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
+        Guardar Tarea
+    </button>
+</form>
+
+    </div>
+  </div>
+
+  <script>
+    
+    setTimeout(() => {
+      const successMessage = document.getElementById('success-message');
+      if (successMessage) {
+        successMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
+      }
+    }, 2000);
+  </script>
+
 </body>
 </html>

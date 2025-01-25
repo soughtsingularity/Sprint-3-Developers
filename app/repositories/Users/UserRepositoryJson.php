@@ -1,9 +1,4 @@
 <?php 
-
-include_once __DIR__ . "/UserRepositoryInterface.php";
-
-use Illuminate\Support\Collection;
-
 class UserRepositoryJson implements UserRepositoryInterface {
 
     private static $_instance = null;
@@ -35,10 +30,9 @@ class UserRepositoryJson implements UserRepositoryInterface {
     public function save($email){
         $dataSet = $this->readData();
         
-        // Verificar si el email ya existe
         foreach($dataSet as $user){
             if ($user['email'] === $email) {
-                return false; // Email ya registrado
+                return false; 
             }
         }
 
@@ -53,27 +47,32 @@ class UserRepositoryJson implements UserRepositoryInterface {
     }
 
     public function getAll() {
-        $data = json_decode(file_get_contents($this->filePath), true);
+
+        try {
+
+            $jsonData = @file_get_contents($this->filePath);
+            
+            if ($jsonData === false) {
+                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+            }
     
-        if (!is_array($data)) {
-            return [];  // Devuelve un array vacío si los datos no son válidos
+            $data = json_decode($jsonData, true);
+    
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+            }
+    
+            return array_map(function($user) {
+                return [
+                    'email' => isset($user['email']) ? $user['email'] : 'undefined'
+                ];
+            }, $data);
+    
+        } catch (Exception $e) {
+            error_log("Error fetching users: " . $e->getMessage());
+            return [];
         }
+    }
     
-        // Verifica si cada elemento tiene la clave 'email'
-        return array_map(function($user) {
-            return [
-                'email' => isset($user['email']) ? $user['email'] : 'undefined'
-            ];
-        }, $data);
-    }
 
-    public function findById($id){
-        $data = $this->readData();
-        return collect($data)->firstWhere('id', $id);
-    }
-
-    public function findByEmail($email){
-        $data = $this->readData();
-        return collect($data)->firstWhere('email', $email);
-    }
 }

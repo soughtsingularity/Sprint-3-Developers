@@ -13,12 +13,10 @@ $routes = array(
     '/' => 'Home#login', // Mostrar formulario de login
     '/index.php/user/register' => 'User#register', // Procesar login
     '/index.php/tasks/list' => 'Task#list', // Mostrar lista de tareas
-    '/index.php/tasks/add' => 'Task#add', // Mostrar formulario de nueva tarea
-    '/tasks/store' => 'Task#store', // Procesar la nueva tarea (POST)
-    '/index.php/tasks/edit/:id' => 'Task#edit',  // Mostrar formulario de edición
-    '/tasks/index.php/update/:id' => 'Task#update', // Procesar edición (POST)
-    '/tasks/delete/:id' => 'Task#deleteConfirm', // Mostrar confirmación de eliminación
-    '/tasks/destroy/:id' => 'Task#destroy', // Procesar la eliminación (POST)
+    '/index.php/tasks/add' => 'Task#add', // Mostrar formulario de creación de tareas
+    '/index.php/tasks/edit' => 'Task#edit',  // Mostrar formulario de edición de tareas
+    '/index.php/tasks/save' => 'Task#save', // Crear o actualizar la tarea (POST)
+    '/index.php/tasks/delete/' => 'Task#delete', // Mostrar confirmación de eliminación
     '/tasks/search' => 'Task#search', // Buscar tareas por nombre
 
     // Rutas para manejar errores
