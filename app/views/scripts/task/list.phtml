@@ -61,9 +61,10 @@
           if (count($tasks) > 0): 
         ?>
           <?php foreach ($tasks as $task): ?>
+            <?php 
+              $taskId = isset($task['id']) ? $task['id'] : (isset($task['_id']) ? (string)$task['_id'] : null);
+            ?>
             <div class="bg-gray-700 rounded-md p-4 shadow-sm">
-
-              <!-- Primera fila: Nombre de la tarea y Estado -->
               <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-semibold text-gray-300">
                   <?= htmlspecialchars($task['name'] ?? 'Sin nombre') ?>
@@ -81,28 +82,26 @@
                 </span>
               </div>
 
-              <!-- Segunda fila: Fechas y usuario asignado -->
               <div class="flex justify-between mb-2">
                 <div>
                   <p class="text-gray-400 text-sm">Fecha de inicio:</p>
-                  <span class="text-gray-300"><?= htmlspecialchars($task['start_date'] ?? 'N/A') ?></span>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['startDate'] ?? 'N/A') ?></span>
                 </div>
                 <div>
                   <p class="text-gray-400 text-sm">Fecha de entrega:</p>
-                  <span class="text-gray-300"><?= htmlspecialchars($task['due_date'] ?? 'N/A') ?></span>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['endDate'] ?? 'N/A') ?></span>
                 </div>
                 <h2 class="text-lg font-semibold text-gray-300">
-                  <?= htmlspecialchars($task['assigned_to'] ?? 'Sin asignar') ?>
+                  <?= htmlspecialchars($task['user'] ?? 'Sin asignar') ?>
                 </h2>
               </div>
 
-              <!-- Tercera fila: Botones de acción -->
               <div class="flex justify-end gap-2">
-                <a href="<?= WEB_ROOT ?>/index.php/tasks/edit?id=<?= urlencode($task['id']) ?>" 
+                <a href="<?= WEB_ROOT ?>/index.php/tasks/edit?id=<?= urlencode($taskId) ?>" 
                    class="px-3 py-1 text-sm font-medium bg-blue-500 text-gray-900 rounded-md">
                   Editar
                 </a>
-                <a href="<?= WEB_ROOT ?>/index.php/tasks/delete?id=<?= urlencode($task['id']) ?>" 
+                <a href="<?= WEB_ROOT ?>/index.php/tasks/delete?id=<?= urlencode($taskId) ?>" 
                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')"
                    class="px-3 py-1 text-sm font-medium bg-red-600 text-white rounded-md">
                   Eliminar
@@ -134,10 +133,11 @@
           successMessage.style.display = 'none';
       }
   }, 2000);
-</script>
+  </script>
 
 </body>
 </html>
+
 
 
 

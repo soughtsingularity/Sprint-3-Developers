@@ -7,6 +7,8 @@ class TaskController extends Controller {
         $taskRepository = TaskRepositoryFactory::create();
         $this->view->tasks = $taskRepository->getAll();
 
+
+
     }
 
     public function addAction(){
@@ -45,9 +47,9 @@ class TaskController extends Controller {
             'id' => $_POST['id'] ?? null,
             'name' => $_POST['name'] ?? null,
             'status' => $_POST['status'] ?? null,
-            'start_date' => $_POST['start_date'] ?? null,
-            'due_date' => $_POST['due_date'] ?? null,
-            'assigned_to' => $_POST['assigned_to'] ?? null,
+            'startDate' => $_POST['startDate'] ?? null,
+            'endDate' => $_POST['endDate'] ?? null,
+            'user' => $_POST['user'] ?? null,
         ];
     
         $taskRepository = TaskRepositoryFactory::create();
@@ -62,9 +64,14 @@ class TaskController extends Controller {
                 header("Location: " . WEB_ROOT . "/index.php/tasks/add?success=true");
             }
             exit();
-        } else {
-            $_SESSION['error_message'] = "Hubo un problema al guardar la tarea.";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/edit?id=" . ($taskData['id'] ?? '') . "&error=true");
+        } else {        
+            if (isset($taskData['id']) && !empty($taskData['id'])) {
+                $_SESSION['error_message'] = "Hubo un problema al actualizar la tarea.";
+                header("Location: " . WEB_ROOT . "/index.php/tasks/edit?id=" . $taskData['id'] . "&error=true");
+            } else {
+                $_SESSION['error_message'] = "Hubo un problema al crear la tarea.";
+                header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
+            }
             exit();
         }
     }

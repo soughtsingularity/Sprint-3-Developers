@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Añadir Tarea</title>
+  <title>Editar Tarea</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-gray-200 min-h-screen">
@@ -55,7 +55,7 @@
 
       <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
     <!-- Campo oculto para el ID si existe -->
-    <input type="hidden" name="id" value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : ''; ?>">
+        <input type="hidden" name="id" value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : ''; ?>">
 
     <div class="mb-4">
         <label class="block text-gray-400">Nombre de la tarea</label>
@@ -74,36 +74,34 @@
             class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
             required>
             <option value="">Seleccione un estado</option>
-            <option value="En progreso" <?= isset($this->task['status']) && $this->task['status'] == 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
-            <option value="Completada" <?= isset($this->task['status']) && $this->task['status'] == 'completed' ? 'selected' : ''; ?>>Completada</option>
-            <option value="Pendiente" <?= isset($this->task['status']) && $this->task['status'] == 'pending' ? 'selected' : ''; ?>>Pendiente</option>
+            <option value="in_progress" <?= isset($this->task['status']) && $this->task['status'] == 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
+            <option value="completed" <?= isset($this->task['status']) && $this->task['status'] == 'completed' ? 'selected' : ''; ?>>Completada</option>
+            <option value="pending" <?= isset($this->task['status']) && $this->task['status'] == 'pending' ? 'selected' : ''; ?>>Pendiente</option>
         </select>
     </div>
 
     <div class="mb-4">
-        <label class="block text-gray-400">Fecha de inicio</label>
-        <input 
+          <label class="block text-gray-400">Fecha de inicio</label>
+          <input 
             type="date" 
-            name="start_date" 
-            value="<?= isset($this->task['start_date']) ? htmlspecialchars($this->task['start_date']) : ''; ?>"
+            name="startDate" 
             class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
             required>
-    </div>
+        </div>
 
-    <div class="mb-4">
-        <label class="block text-gray-400">Fecha límite</label>
-        <input 
+        <div class="mb-4">
+          <label class="block text-gray-400">Fecha límite</label>
+          <input 
             type="date" 
-            name="due_date" 
-            value="<?= isset($this->task['due_date']) ? htmlspecialchars($this->task['due_date']) : ''; ?>"
+            name="endDate" 
             class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
             required>
-    </div>
+        </div>
 
     <div class="mb-4">
         <label class="block text-gray-400">Asignado a</label>
         <select 
-            name="assigned_to" 
+            name="user" 
             class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
             required>
             <option value="">Seleccione un usuario</option>
@@ -133,6 +131,14 @@
         window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
       }
     }, 2000);
+
+    setTimeout(() =>{
+      const errorMessage = document.getElementById("error-message");
+      if(errorMessage){
+        errorMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
+      }
+    }, 2000)  
   </script>
 
 </body>

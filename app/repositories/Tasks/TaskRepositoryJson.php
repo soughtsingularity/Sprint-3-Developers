@@ -7,6 +7,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
 
     public function __construct(){
         $this->filePath = ROOT_PATH . "/app/data/Tasks.json";
+
         if(!file_exists($this->filePath)){
             file_put_contents($this->filePath, json_encode([]));
         }
@@ -49,9 +50,9 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                     return [
                         'name' => isset($task['name']) ? $task['name'] : 'undefined',
                         'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                        'start_date' => isset($task['start_date']) ? $task['start_date'] : 'undefined',
-                        'due_date' => isset($task['due_date']) ? $task['due_date'] : 'undefined',
-                        'assigned_to' => isset($task['assigned_to']) ? $task['assigned_to'] : 'undefined',
+                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
+                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
+                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
                         'id' => isset($task['id']) ? $task['id'] : 'undefined'
                     ];
                 }
@@ -87,9 +88,9 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 return [
                     'name' => isset($task['name']) ? $task['name'] : 'undefined',
                     'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                    'start_date' => isset($task['start_date']) ? $task['start_date'] : 'undefined',
-                    'due_date' => isset($task['due_date']) ? $task['due_date'] : 'undefined',
-                    'assigned_to' => isset($task['assigned_to']) ? $task['assigned_to'] : 'undefined',
+                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
+                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
+                    'user' => isset($task['user']) ? $task['user'] : 'undefined',
                     'id' => isset($task['id']) ? $task['id'] : 'undefined'
                 ];
             }, $data);
@@ -98,11 +99,6 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             error_log("Error fetching users: " . $e->getMessage());
             return [];
         }
-    }
-
-    public function fetchOne($name){
-        $data = $this->readData();
-        return collect($data)->firstWhere('name', $name);
     }
     
     public function save(array $data){

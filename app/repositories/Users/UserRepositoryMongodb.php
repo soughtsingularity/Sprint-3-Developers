@@ -24,12 +24,6 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
 
     public function save($email)
     {
-
-        try{
-
-        }catch(){
-            
-        }
         if (!$email) {
             return false;
         }
@@ -40,23 +34,27 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
         if ($existingUser) {
             return false; // El email ya está registrado
         }
-        
-        $lastUser = $this->collection->findOne([], ['sort' => ['id' => -1]]);
-        $newId = $lastUser ? $lastUser['id'] + 1 : 1;
     
-        // Insertar el nuevo usuario en la colección
+        // Insertar el nuevo usuario en la colección sin generar un id manualmente
         $result = $this->collection->insertOne([
-            'id' => $newId,
             'email' => $email
         ]);
     
         return $result->getInsertedCount() > 0;
     }
+    
+
 
     public function getAll() {
         try {
             $cursor = $this->collection->find();
             $users = iterator_to_array($cursor);
+    
+            // Convertir _id a string para mantener consistencia
+            foreach ($users as &$user) {
+                $user['id'] = (string)$user['_id']; // Asignar _id como id para compatibilidad
+                unset($user['_id']);  // Opcional: eliminar el _id original si no se necesita
+            }
     
             return $users;
         } catch (Exception $e) {
@@ -64,5 +62,6 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
             return [];
         }
     }
+    
 
 }

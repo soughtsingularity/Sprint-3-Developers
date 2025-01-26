@@ -8,14 +8,21 @@ class UserController extends Controller {
         $this->userRepository = UserRepositoryFactory::create();    }
 
 
-    public function registerAction() {
-        $email = $this->_getParam('email');
-    
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->userRepository->save($email);
+        public function registerAction() {
+            
+            $email = $this->_getParam('email');
+        
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $newUser = $this->userRepository->save($email);
+            }
+        
+            if (isset($newUser) && $newUser) {
+                $_SESSION['success_message'] = "Usuario creado correctamente.";
+                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
+            } elseif ($newUser === false) {
+                $_SESSION['success_message'] = "Bienvenido {$email}.";
+                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
+            }
+            exit();
         }
-    
-        header("Location: " . WEB_ROOT . "/index.php/tasks/list");
-        exit();
-    }
 }

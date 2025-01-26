@@ -1,79 +1,130 @@
 <?php
 
-use App\Repositories\TaskRepositoryInterface;
-
-
 class TaskRepositoryMysql implements TaskRepositoryInterface{
 
     private static $_instance = null;
-    protected $_dbh;
-    protected $_table;
-    protected $_dbType = 'mysql'; 
+    private $pdo;
 
+    public function __construct(){
 
-    public function __construct($table){
+        $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
 
-        $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
+        $host = $settings['mysql']['host'];
+        $dbname = $settings['mysql']['dbname'];
+        $user = $settings['mysql']['user'];
+        $password = $settings['mysql']['password'];
 
-        if(!isset($settings[$this->_dbType])){
-            throw new Exception("Database configuration for {$this->_dbType} not found.");
+        try {
+            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Error de conexión a la base de datos: " . $e->getMessage());
         }
-
-        $dbConfig = $settings[$this->_dbType];
-
-        $this->_dbh = new PDO(
-            sprintf(
-            "%s:host=%s;dbname=%s",
-            $dbConfig['driver'],
-            $dbConfig['host'],
-            $dbConfig['dbname']
-            ),
-        $dbConfig['user'],
-        $dbConfig['password'],
-        array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
-        );
-
-        $this->_table = $table;
     }
 
     public static function getInstance(){
-        if(self::$_instance == null){
+        if(self::$_instance === null){
             self::$_instance = new self();
         }
 
-        return self::$_instance->_dbh;
+        return self::$_instance;
     }
 
-    public function fetchOne($id){
-        $sql = 'SELECT * FROM ' . $this->_table . ' WHERE id = ?';
-        $statement = $this->_dbh->prepare($sql);
+    public function getById($id){
+        $sql = 'SELECT * FROM tasks WHERE id = ?';
+        $statement = $this->pdo->prepare($sql);
         $statement->execute([$id]);
-        return $statement->fetch(PDO::FETCH_OBJ); 
+        return $statement->fetch(PDO::FETCH_ASSOC); 
     }
+    
 
-    public function getAll(){
-        
-    }
-
-    public function save(array $data){
-        if(isset($data['id'])){
-            $sql = 'UPDATE ' . $this->_table . ' SET ';
-            $columns = [];
-            foreach($data as $key => $value){
-                if($key !== 'id'){
-                    $columns[] = "$key = ?";
-                }
-            }
-            $sql .= implode(', ', $columns) . ' WHERE id =?';
-            $data['id'] = $data['id'];
-            $statement = $this->_dbh->prepare($sql);
-            return $statement->execute(array_values($data));
+    public function getAll() {
+        try {
+            // Obtener todos los campos relevantes de la tabla 'tasks'
+            $stmt = $this->pdo->query("SELECT id, name, status, 
+                          DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
+                          DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
+                          user FROM tasks");            
+            // Obtener todas las filas como un array asociativo
+            $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Asegurar siempre que se devuelve un array válido
+            return is_array($tasks) ? $tasks : [];
+            
+        } catch (PDOException $e) {
+            error_log("Error al obtener tareas: " . $e->getMessage());
+            return [];
         }
     }
+    
 
-    public function delete($id){
-        $statement = $this->_dbh->prepare("DELETE FROM " . $this->_table . " WHERE id = ?");
-        return $statement->execute([$id]);
+    public function save(array $data) {
+        try {
+            if (isset($data['id']) && !empty($data['id'])) {
+                $stmt = $this->pdo->prepare("SELECT id FROM tasks WHERE id = :id");
+                $stmt->execute([':id' => $data['id']]);
+    
+                if ($stmt->fetch()) {
+                    // Si la tarea existe, actualizarla
+                    $stmt = $this->pdo->prepare("UPDATE tasks 
+                                                 SET name = :name, 
+                                                     status = :status, 
+                                                     startDate = :startDate, 
+                                                     endDate = :endDate, 
+                                                     user = :user 
+                                                 WHERE id = :id");
+    
+                    $stmt->execute([
+                        ':id' => $data['id'],
+                        ':name' => $data['name'],
+                        ':status' => $data['status'],
+                        ':startDate' => $data['startDate'],
+                        ':endDate' => $data['endDate'],
+                        ':user' => $data['user']
+                    ]);
+    
+                    return $data['id'];  // Retornar el ID de la tarea actualizada
+                }
+            }
+    
+            // Si no hay ID, se inserta como una nueva tarea
+            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user) 
+                                         VALUES (:name, :status, :startDate, :endDate, :user)");
+    
+            $stmt->execute([
+                ':name' => $data['name'],
+                ':status' => $data['status'],
+                ':startDate' => $data['startDate'],
+                ':endDate' => $data['endDate'],
+                ':user' => $data['user']
+            ]);
+    
+            return $this->pdo->lastInsertId();  // Retornar el nuevo ID generado
+    
+        } catch (PDOException $e) {
+            error_log("Error al guardar la tarea: " . $e->getMessage());
+            return false;
+        }
     }
+    
+    
+    public function delete($id) {
+        try {
+            // Preparar la consulta para eliminar la tarea por ID
+            $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
+    
+            // Ejecutar la consulta con el ID proporcionado
+            $stmt->execute(['id' => $id]);
+    
+            // Retornar true si se eliminó al menos una fila, false si no se encontró el ID
+            return $stmt->rowCount() > 0;
+            
+        } catch (PDOException $e) {
+            // Registrar el error en el log para depuración
+            error_log("Error al eliminar la tarea con ID {$id}: " . $e->getMessage());
+            return false;
+        }
+    }
+    
 
 }

@@ -11,6 +11,7 @@
  */
 $routes = array(
     '/' => 'Home#login', // Mostrar formulario de login
+    '/index.php/home/login' => 'Home#login',
     '/index.php/user/register' => 'User#register', // Procesar login
     '/index.php/tasks/list' => 'Task#list', // Mostrar lista de tareas
     '/index.php/tasks/add' => 'Task#add', // Mostrar formulario de creación de tareas
