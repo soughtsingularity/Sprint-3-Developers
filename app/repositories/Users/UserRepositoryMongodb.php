@@ -24,6 +24,12 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
 
     public function save($email)
     {
+
+        try{
+
+        }catch(){
+            
+        }
         if (!$email) {
             return false;
         }

@@ -41,7 +41,9 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
             $stmt->execute(['email' => $email]);
             
             return $this->pdo->lastInsertId();
+
         } catch (PDOException $e) {
+            error_log("Error al guardar usuario: " . $e->getMessage());
             return false;
         }
     }
@@ -51,6 +53,8 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
             $stmt = $this->pdo->query("SELECT email FROM users");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage());
+
             return [];
         }
     }

@@ -74,9 +74,9 @@
             class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
             required>
             <option value="">Seleccione un estado</option>
-            <option value="in_progress" <?= isset($this->task['status']) && $this->task['status'] == 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
-            <option value="completed" <?= isset($this->task['status']) && $this->task['status'] == 'completed' ? 'selected' : ''; ?>>Completada</option>
-            <option value="pending" <?= isset($this->task['status']) && $this->task['status'] == 'pending' ? 'selected' : ''; ?>>Pendiente</option>
+            <option value="En progreso" <?= isset($this->task['status']) && $this->task['status'] == 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
+            <option value="Completada" <?= isset($this->task['status']) && $this->task['status'] == 'completed' ? 'selected' : ''; ?>>Completada</option>
+            <option value="Pendiente" <?= isset($this->task['status']) && $this->task['status'] == 'pending' ? 'selected' : ''; ?>>Pendiente</option>
         </select>
     </div>
 

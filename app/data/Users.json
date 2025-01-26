@@ -18,5 +18,9 @@
     {
         "id": 5,
         "email": "sncrut@gmail.com"
+    },
+    {
+        "id": 6,
+        "email": "root@gmail.com"
     }
 ]
