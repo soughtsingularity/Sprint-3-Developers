@@ -35,11 +35,15 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     }
 
     public function getById($id) {
-        if (\MongoDB\BSON\ObjectId::isValid($id)) {
-            return $this->collection->findOne(['_id' => new \MongoDB\BSON\ObjectId($id)]);
+        try {
+            $objectId = new \MongoDB\BSON\ObjectId($id);
+            return $this->collection->findOne(['_id' => $objectId]);
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException $e) {
+            // Si el ID no es válido, devolver null
+            return null;
         }
-        return null;
     }
+    
     
 
     public function fetchOne($name) {

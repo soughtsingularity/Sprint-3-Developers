@@ -55,7 +55,7 @@
 
       <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
     <!-- Campo oculto para el ID si existe -->
-        <input type="hidden" name="id" value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : ''; ?>">
+    <input type="hidden" name="id" value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : (isset($this->task['_id']) ? htmlspecialchars((string)$this->task['_id']) : ''); ?>">
 
     <div class="mb-4">
         <label class="block text-gray-400">Nombre de la tarea</label>
