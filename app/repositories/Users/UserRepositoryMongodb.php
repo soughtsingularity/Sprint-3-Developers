@@ -9,9 +9,16 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
 
     public function __construct(){
         $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
-        $client = new Client($settings['mongodb']['uri']);
-        $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
-        ->selectCollection('users');
+        
+        try {
+            $client = new Client($settings['mongodb']['uri']);
+            $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
+                                       ->selectCollection('users');
+        } catch (\MongoDB\Exception\Exception $e) {
+            error_log("MongoDB connection error: " . $e->getMessage());
+            throw new \Exception("Error al conectar con la base de datos.");
+        }
+        
     }
 
     public static function getInstance(){
@@ -24,23 +31,31 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
 
     public function save($email)
     {
-        if (!$email) {
-            return false;
+        try{
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                error_log("Intento de guardar usuario con email inválido: " . $email);
+                throw new Exception("El email no es válido.");
+            }
+
+            $existingUser = $this->collection->findOne(['email' => $email]);
+    
+            if ($existingUser) {
+                error_log("Intento de guardar un usuario existente: " . $email);
+                throw new Exception("El usuario ya existe."); 
+            }
+        
+            $result = $this->collection->insertOne([
+                'email' => $email
+            ]);
+        
+            return ($result->getInsertedCount() > 0) ? true : false;
+
+        }catch(\MongoDB\Exception\Exception | \Exception $e){
+            error_log("Error al guardar al usuario " . $e->getMessage());
+            return false; 
         }
-    
-        // Verificar si el email ya existe en la colección
-        $existingUser = $this->collection->findOne(['email' => $email]);
-    
-        if ($existingUser) {
-            return false; // El email ya está registrado
-        }
-    
-        // Insertar el nuevo usuario en la colección sin generar un id manualmente
-        $result = $this->collection->insertOne([
-            'email' => $email
-        ]);
-    
-        return $result->getInsertedCount() > 0;
+
     }
     
 
@@ -50,18 +65,15 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
             $cursor = $this->collection->find();
             $users = iterator_to_array($cursor);
     
-            // Convertir _id a string para mantener consistencia
             foreach ($users as &$user) {
-                $user['id'] = (string)$user['_id']; // Asignar _id como id para compatibilidad
-                unset($user['_id']);  // Opcional: eliminar el _id original si no se necesita
+                $user['id'] = (string)$user['_id']; 
+                unset($user['_id']);  
             }
     
             return $users;
-        } catch (Exception $e) {
+        } catch (\MongoDB\Exception\Exception $e) {
             error_log("Error fetching users: " . $e->getMessage());
-            return [];
+            return null;
         }
     }
-    
-
 }

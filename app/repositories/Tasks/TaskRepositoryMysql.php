@@ -18,7 +18,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("Error de conexión a la base de datos: " . $e->getMessage());
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
         }
     }
 
@@ -31,29 +31,49 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     }
 
     public function getById($id){
-        $sql = 'SELECT * FROM tasks WHERE id = ?';
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([$id]);
-        return $statement->fetch(PDO::FETCH_ASSOC); 
+        try {
+
+            if (empty($id)) {
+                throw new InvalidArgumentException("ID no proporcionado");
+            }
+            
+            $sql = 'SELECT * FROM tasks WHERE id = ?';
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute([$id]);
+            return $statement->fetch(PDO::FETCH_ASSOC); 
+
+        } catch (PDOException $e) {
+            error_log("Error fetching the id: " . $e->getMessage());
+            return false;
+        }
     }
     
 
     public function getAll() {
         try {
-            // Obtener todos los campos relevantes de la tabla 'tasks'
+
             $stmt = $this->pdo->query("SELECT id, name, status, 
                           DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
                           DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
-                          user FROM tasks");            
-            // Obtener todas las filas como un array asociativo
+                          user FROM tasks");  
+
             $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $statusMap = [
+                'pending' => 'Pendiente',
+                'in_progress' => 'En proceso',
+                'completed' => 'Completada'
+            ];
+
+            foreach ($tasks as &$task) {
+                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
+            }
     
-            // Asegurar siempre que se devuelve un array válido
-            return is_array($tasks) ? $tasks : [];
+            return $tasks;
             
         } catch (PDOException $e) {
             error_log("Error al obtener tareas: " . $e->getMessage());
-            return [];
+            return null;
         }
     }
     
@@ -83,11 +103,14 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                         ':user' => $data['user']
                     ]);
     
-                    return $data['id'];  // Retornar el ID de la tarea actualizada
+                    if ($stmt->rowCount() > 0) {
+                        return $data['id'];
+                    } else {
+                        return false;
+                    }                
                 }
             }
     
-            // Si no hay ID, se inserta como una nueva tarea
             $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user) 
                                          VALUES (:name, :status, :startDate, :endDate, :user)");
     
@@ -99,7 +122,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 ':user' => $data['user']
             ]);
     
-            return $this->pdo->lastInsertId();  // Retornar el nuevo ID generado
+            return $this->pdo->lastInsertId();  
     
         } catch (PDOException $e) {
             error_log("Error al guardar la tarea: " . $e->getMessage());
@@ -110,21 +133,17 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
     public function delete($id) {
         try {
-            // Preparar la consulta para eliminar la tarea por ID
+
             $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
     
-            // Ejecutar la consulta con el ID proporcionado
-            $stmt->execute(['id' => $id]);
+            $stmt->execute([':id' => $id]);
     
-            // Retornar true si se eliminó al menos una fila, false si no se encontró el ID
             return $stmt->rowCount() > 0;
             
         } catch (PDOException $e) {
-            // Registrar el error en el log para depuración
+
             error_log("Error al eliminar la tarea con ID {$id}: " . $e->getMessage());
             return false;
         }
     }
-    
-
 }

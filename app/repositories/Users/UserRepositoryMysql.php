@@ -16,8 +16,9 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
         try {
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die("Error de conexión a la base de datos: " . $e->getMessage());
+        } catch (\PDOException | \Exception $e) {
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+            throw new Exception("No se pudo conectar a la base de datos.");
         }
     }
 
@@ -31,7 +32,7 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
     public function save($email) {
         try {
             $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = :email");
-            $stmt->execute(['email' => $email]);
+            $stmt->execute([':email' => $email]);
 
             if ($stmt->fetch()) {
                 return false;  
@@ -52,10 +53,9 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
         try {
             $stmt = $this->pdo->query("SELECT email FROM users");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+        } catch (\PDOException | \Exception $e) {
             error_log("Error al obtener usuarios: " . $e->getMessage());
-
-            return [];
+            return null;
         }
     }
 }

@@ -9,9 +9,15 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
     public function __construct() {
         $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
-        $client = new Client($settings['mongodb']['uri']);
-        $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
-        ->selectCollection('tasks');    
+        try {
+            $client = new Client($settings['mongodb']['uri']);
+            $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
+                ->selectCollection('tasks');
+        } catch (\MongoDB\Exception\RuntimeException $e) {
+            error_log("MongoDB connection error: " . $e->getMessage());
+            
+        }
+        
     }
     
     public static function getInstance(){
@@ -26,11 +32,22 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         try {
             $cursor = $this->collection->find();
             $tasks = iterator_to_array($cursor);
+
+            $statusMap = [
+                'pending' => 'Pendiente',
+                'in_progress' => 'En proceso',
+                'completed' => 'Completada'
+            ];
+
+            foreach ($tasks as &$task) {
+                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
+            }
+
     
             return $tasks;
-        } catch (Exception $e) {
-            error_log("Error fetching users: " . $e->getMessage());
-            return [];
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            error_log("Error fetching tasks: " . $e->getMessage());
+            return null;
         }
     }
 
@@ -38,37 +55,44 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         try {
             $objectId = new \MongoDB\BSON\ObjectId($id);
             return $this->collection->findOne(['_id' => $objectId]);
-        } catch (\MongoDB\Driver\Exception\InvalidArgumentException $e) {
-            // Si el ID no es válido, devolver null
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            error_log("Error fetching the _id: " . $e->getMessage());
             return null;
         }
     }
-    
-    
-
-    public function fetchOne($name) {
-        return $this->collection->findOne(['name' => new \MongoDB\BSON\ObjectId($name)]);
-    }
 
     public function save(array $data) {
-        if (isset($data['id']) && !empty($data['id'])) {
-            // Convertir id a ObjectId si es válido
-            $filter = ['_id' => new \MongoDB\BSON\ObjectId($data['id'])];
-    
-            // Evitar duplicidad de la clave id en MongoDB
-            unset($data['id']);
-    
-            $this->collection->updateOne($filter, ['$set' => $data]);
-            return (string) $data['_id'];
-        } else {
-            unset($data['id']); // Evitar el campo 'id' manual
-            $result = $this->collection->insertOne($data);
-            return (string) $result->getInsertedId();
+
+        try {
+
+            if (isset($data['id']) && !empty($data['id'])) {
+
+                $filter = ['_id' => new \MongoDB\BSON\ObjectId($data['id'])];
+        
+                if (isset($data['id'])) {
+                    unset($data['id']);
+                }
+                        
+                if (!empty($data)) {
+                    $this->collection->updateOne($filter, ['$set' => $data]);
+                } else {
+                    throw new \Exception("No data provided for update.");
+                }                
+                
+                return (string) $filter['_id'];
+
+            } else {
+                unset($data['id']); // Evitar el campo 'id' manual
+                $result = $this->collection->insertOne($data);
+                return (string) $result->getInsertedId();
+            }
+
+        }catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e){
+            error_log("Error saving task: " . $e->getMessage());
+            return false;
         }
     }
     
-    
-
     public function delete($id)
     {
         try {
@@ -76,11 +100,10 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
             $result = $this->collection->deleteOne(['_id' => $objectId]);
     
             return $result->getDeletedCount() > 0;
-        } catch (\MongoDB\Driver\Exception\InvalidArgumentException $e) {
-            error_log("ID no válido para MongoDB: " . $e->getMessage());
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            error_log("Error deleting task: " . $e->getMessage());
             return false;
         }
     }
-    
     
 }

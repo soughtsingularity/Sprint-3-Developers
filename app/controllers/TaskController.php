@@ -3,125 +3,172 @@
 class TaskController extends Controller {
 
     public function listAction() {
-
-        $taskRepository = TaskRepositoryFactory::create();
-        $this->view->tasks = $taskRepository->getAll();
-
-
-
+        try {
+            $taskRepository = TaskRepositoryFactory::create();
+    
+            if (!$taskRepository) {
+                throw new Exception("Error initializing the repository.");
+            }
+    
+            $this->view->tasks = $taskRepository->getAll();
+    
+        } catch (Exception $e) {
+            error_log("Error loading tasks list: " . $e->getMessage());
+            $_SESSION['error_message'] = "Error cargando la lista de tareas.";
+            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            exit();
+        }
     }
+    
 
     public function addAction(){
 
-        $userRepository = UserRepositoryFactory::create();
-        $this->view->users = $userRepository->getAll();
+        try{
+
+            $userRepository = UserRepositoryFactory::create();
+
+            if($userRepository){
+                $this->view->users = $userRepository->getAll();
+            }else{
+                throw new Exception("Error inicializating the repo");
+            }
+
+        }catch(Exception $e){
+            error_log("Error loading the add task form" . $e->getMessage());
+            $_SESSION['error_message'] = "Error loading the task form";
+            header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
+            return null;
+        }
+
+
     }
 
     public function editAction() {
-
-        $userRepository = UserRepositoryFactory::create();
-        $this->view->users = $userRepository->getAll();
-
-        $id = $_GET['id'] ?? null;
-
-        // Validar si el ID es numérico o un ObjectId válido
         try {
-            $taskId = new \MongoDB\BSON\ObjectId($id);
-        } catch (\Exception $e) {
-            if (!is_numeric($id)) {
-                echo "ID no válido";
-                return;
+            $userRepository = UserRepositoryFactory::create();
+            $this->view->users = $userRepository->getAll();
+            
+            $id = $_GET['id'] ?? null;
+    
+            if (!$id) {
+                throw new \Exception("ID de tarea no proporcionado.");
             }
-            $taskId = (int)$id;
-        }
-        
-        $taskRepository = TaskRepositoryFactory::create();
-        $task = $taskRepository->getById($taskId);
-        
-        if (!$task) {
-            echo "Tarea no encontrada";
-            return;
-        }
-        
-        $this->view->task = $task;
-        
-        
     
-        $taskRepository = TaskRepositoryFactory::create();
-        $task = $taskRepository->getById($taskId);
+            // Validar y convertir el ID (ObjectId para MongoDB o entero para MySQL)
+            if (preg_match('/^[0-9a-fA-F]{24}$/', $id)) {
+                $taskId = new \MongoDB\BSON\ObjectId($id);
+            } elseif (is_numeric($id)) {
+                $taskId = (int)$id;
+            } else {
+                throw new \Exception("ID de tarea no válido.");
+            }
     
-        if (!$task) {
-            echo "Tarea no encontrada";
-            return;
+            $taskRepository = TaskRepositoryFactory::create();
+            $task = $taskRepository->getById($taskId);
+    
+            if (!$task) {
+                throw new \Exception("No se encontró la tarea.");
+            }
+    
+            $this->view->task = $task;
+    
+        } catch (\Exception $e) {
+            error_log("Error al obtener la tarea: " . $e->getMessage());
+            $_SESSION['error_message'] = "Hubo un problema al obtener la tarea.";
+            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            exit();
         }
-    
-        $this->view->task = $task;
     }
+    
 
     public function saveAction() {
-        $taskData = [
-            'id' => isset($_POST['id']) ? 
-                (preg_match('/^[0-9a-fA-F]{24}$/', $_POST['id']) ? new \MongoDB\BSON\ObjectId($_POST['id']) : $_POST['id']) 
-                : null,
-            'name' => $_POST['name'] ?? null,
-            'status' => $_POST['status'] ?? null,
-            'startDate' => $_POST['startDate'] ?? null,
-            'endDate' => $_POST['endDate'] ?? null,
-            'user' => $_POST['user'] ?? null,
-        ];
-        
+        try {
+            $taskData = [
+                'id' => isset($_POST['id']) ? 
+                    (preg_match('/^[0-9a-fA-F]{24}$/', $_POST['id']) ? new \MongoDB\BSON\ObjectId($_POST['id']) : $_POST['id']) 
+                    : null,
+                'name' => $_POST['name'] ?? null,
+                'status' => $_POST['status'] ?? null,
+                'startDate' => $_POST['startDate'] ?? null,
+                'endDate' => $_POST['endDate'] ?? null,
+                'user' => $_POST['user'] ?? null,
+            ];
+            
+            $taskRepository = TaskRepositoryFactory::create();
+            $result = $taskRepository->save($taskData);
     
-        $taskRepository = TaskRepositoryFactory::create();
-        $result = $taskRepository->save($taskData);
-        
-        if ($result !== false && $result !== null) {
-            if (isset($taskData['id']) && !empty($taskData['id'])) {
-                $_SESSION['success_message'] = "Tarea actualizada correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true");
+            $isUpdate = isset($taskData['id']) && !empty($taskData['id']);
+    
+            if ($result !== false && $result !== null) {
+                $_SESSION['success_message'] = $isUpdate 
+                    ? "Tarea actualizada correctamente."
+                    : "Tarea creada correctamente.";
+                
+                $redirectUrl = $isUpdate
+                    ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true"
+                    : WEB_ROOT . "/index.php/tasks/add?success=true";
+    
             } else {
-                $_SESSION['success_message'] = "Tarea creada correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/add?success=true");
+                $_SESSION['error_message'] = $isUpdate 
+                    ? "Hubo un problema al actualizar la tarea."
+                    : "Hubo un problema al crear la tarea.";
+                
+                $redirectUrl = $isUpdate
+                    ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
+                    : WEB_ROOT . "/index.php/tasks/add?error=true";
             }
-            exit();
-        } else {        
-            if (isset($taskData['id']) && !empty($taskData['id'])) {
-                $_SESSION['error_message'] = "Hubo un problema al actualizar la tarea.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true");
-            } else {
-                $_SESSION['error_message'] = "Hubo un problema al crear la tarea.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
-            }
-            exit();
+    
+        } catch (Exception $e) {
+            error_log("Error saving task: " . $e->getMessage());
+    
+            $_SESSION['error_message'] = isset($taskData['id']) && !empty($taskData['id'])
+                ? "Hubo un problema inesperado al actualizar la tarea."
+                : "Hubo un problema inesperado al crear la tarea.";
+    
+            $redirectUrl = isset($taskData['id']) && !empty($taskData['id'])
+                ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
+                : WEB_ROOT . "/index.php/tasks/add?error=true";
         }
-        
+    
+        header("Location: " . $redirectUrl);
+        exit();
     }
-
+    
+    
     public function deleteAction() {
-        $id = $_GET['id'] ?? null;
 
         try {
-            $taskId = new \MongoDB\BSON\ObjectId($id);
-        } catch (\Exception $e) {
-            if (!is_numeric($id)) {
-                $_SESSION['error_message'] = "ID de tarea no válido.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/list");
-                exit();
-            }
-            $taskId = (int)$id;
-        }
-        
-        $taskRepository = TaskRepositoryFactory::create();
-        $result = $taskRepository->delete($taskId);
-        
-        if ($result) {
-            $_SESSION['success_message'] = "Tarea eliminada correctamente.";
-        } else {
-            $_SESSION['error_message'] = "Tarea no encontrada.";
-        }
-        
-        header("Location: " . WEB_ROOT . "/index.php/tasks/list");
-        exit();
-        
-    }
+            $id = $_GET['id'] ?? null;
     
+            if (!$id) {
+                throw new Exception("ID de tarea no proporcionado");
+            }
+
+            if (preg_match('/^[0-9a-fA-F]{24}$/', $id)) {
+                $taskId = new \MongoDB\BSON\ObjectId($id);
+            } elseif (is_numeric($id)) {
+                $taskId = (int)$id;
+            } else {
+                throw new \Exception("ID de tarea no válido.");
+            }
+    
+            $taskRepository = TaskRepositoryFactory::create();
+            $result = $taskRepository->delete($taskId);
+    
+            if ($result) {
+                $_SESSION['success_message'] = "Tarea eliminada correctamente.";
+                header("Location: " . WEB_ROOT . "/index.php/tasks/list?success=true");
+                exit();
+            } else {
+                throw new \Exception("No se pudo eliminar la tarea.");
+            }
+    
+        } catch (\Exception $e) {
+            error_log("Error al eliminar la tarea: " . $e->getMessage());
+            $_SESSION['error_message'] = "No se pudo eliminar la tarea.";
+            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            exit();
+        }
+    }
 }
+    
