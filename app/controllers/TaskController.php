@@ -10,7 +10,20 @@ class TaskController extends Controller {
                 throw new Exception("Error initializing the repository.");
             }
     
-            $this->view->tasks = $taskRepository->getAll();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskName']) && !empty(trim($_POST['taskName']))) {
+                $taskName = trim($_POST['taskName']);
+                $tasks = $taskRepository->getByName($taskName);
+    
+                if ($tasks) {
+                    $this->view->tasks = [$tasks];  // Convertir a array para ser compatible con la vista
+                } else {
+                    $this->view->error = "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName);
+                    $this->view->tasks = [];
+                }
+            } else {
+                // Si no se envía un nombre, mostrar todas las tareas
+                $this->view->tasks = $taskRepository->getAll();
+            }
     
         } catch (Exception $e) {
             error_log("Error loading tasks list: " . $e->getMessage());
@@ -19,6 +32,7 @@ class TaskController extends Controller {
             exit();
         }
     }
+    
     
 
     public function addAction(){

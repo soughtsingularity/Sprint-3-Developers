@@ -23,13 +23,19 @@
         Nuevo usuario en el equipo
       </button>
 
-      <div class="flex-1 max-w-md">
+      <form action="<?= $this->baseUrl() ?>/index.php/tasks/list" method="POST" class="flex items-center">
+    <div class="flex-1 max-w-md">
         <input 
-          type="text" 
-          placeholder="Buscar tarea" 
-          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
-        >
-      </div>
+            type="text" 
+            name="taskName"
+            placeholder="Buscar tarea" 
+            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
+            required>
+    </div>
+    <button type="submit" class="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
+        Buscar
+    </button>
+</form>
 
     </div>
   </header>
@@ -73,7 +79,7 @@
                   <?php 
                     switch ($task['status']) {
                       case 'Pendiente': echo 'bg-red-600 text-white'; break;
-                      case 'En progreso': echo 'bg-yellow-500 text-gray-900'; break;
+                      case 'En proceso': echo 'bg-yellow-500 text-gray-900'; break;
                       case 'Completada': echo 'bg-green-600 text-white'; break;
                       default: echo 'bg-gray-500 text-white'; 
                     }

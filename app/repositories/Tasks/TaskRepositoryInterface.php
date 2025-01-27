@@ -5,4 +5,5 @@ interface TaskRepositoryInterface {
     public function save(array $data);
     public function delete($id);
     public function getAll();
+    public function getByName($name);
 }

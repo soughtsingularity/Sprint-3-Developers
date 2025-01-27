@@ -50,44 +50,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             return false;
         }
     }
-
-    public function getById($id) {
-        try {
-
-            $jsonData = file_get_contents($this->filePath);
     
-            if ($jsonData === false) {
-                throw new Exception("Error reading data from: " . $this->filePath);
-            }
-    
-            $data = json_decode($jsonData, true);
-    
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("Error decoding JSON: " . json_last_error_msg());
-            }
-    
-            foreach ($data as $task) {
-                if (isset($task['id']) && $task['id'] == $id) {
-                    return [
-                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
-                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
-                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
-                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
-                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
-                    ];
-                }
-            }
-    
-            return null;
-    
-        } catch (Exception $e) {
-            error_log("Error fetching task by id: " . $e->getMessage());
-            return null;
-        }
-    }
-    
-
     public function getAll() {
 
         try {
@@ -196,6 +159,81 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             error_log("Error al eliminar la tarea: " . $e->getMessage());
             return false;
             
+        }
+    }
+
+    public function getById($id) {
+        try {
+
+            $jsonData = file_get_contents($this->filePath);
+    
+            if ($jsonData === false) {
+                throw new Exception("Error reading data from: " . $this->filePath);
+            }
+    
+            $data = json_decode($jsonData, true);
+    
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error decoding JSON: " . json_last_error_msg());
+            }
+    
+            foreach ($data as $task) {
+                if (isset($task['id']) && $task['id'] == $id) {
+                    return [
+                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
+                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
+                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
+                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
+                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
+                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                    ];
+                }
+            }
+    
+            return null;
+    
+        } catch (Exception $e) {
+            error_log("Error fetching task by id: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getByName($name){
+
+        try{
+
+            $jsonData = file_get_contents($this->filePath);
+
+            if($jsonData === false){
+                throw new Exception("Error reading data from: " . $this->filePath);
+            }
+
+            $data = json_decode($jsonData, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error decoding JSON: " . json_last_error_msg());
+            }
+
+            foreach ($data as $task) {
+                if (isset($task['name']) && $task['name'] == $name) {
+                    return [
+                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
+                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
+                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
+                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
+                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
+                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                    ];
+                }
+            }
+
+            return null;
+
+        }catch(Exception $e){
+
+            error_log("Error fetching task by id: " . $e->getMessage());
+            return null;
+
         }
     }
 } 

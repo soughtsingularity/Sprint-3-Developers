@@ -29,26 +29,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
 
         return self::$_instance;
     }
-
-    public function getById($id){
-        try {
-
-            if (empty($id)) {
-                throw new InvalidArgumentException("ID no proporcionado");
-            }
-            
-            $sql = 'SELECT * FROM tasks WHERE id = ?';
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute([$id]);
-            return $statement->fetch(PDO::FETCH_ASSOC); 
-
-        } catch (PDOException $e) {
-            error_log("Error fetching the id: " . $e->getMessage());
-            return false;
-        }
-    }
     
-
     public function getAll() {
         try {
 
@@ -145,5 +126,57 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             error_log("Error al eliminar la tarea con ID {$id}: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function getById($id){
+        try {
+
+            if (empty($id)) {
+                throw new InvalidArgumentException("ID no proporcionado");
+            }
+            
+            $sql = 'SELECT * FROM tasks WHERE id = ?';
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute([$id]);
+            return $statement->fetch(PDO::FETCH_ASSOC); 
+
+        } catch (PDOException $e) {
+            error_log("Error fetching the id: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getByName($name){
+
+        try {
+
+            if (empty($name)) {
+                throw new InvalidArgumentException("Nombre no proporcionado");
+            }
+            
+            $sql = 'SELECT * FROM tasks WHERE name = ?';
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute([$name]);
+            $task = $statement->fetch(PDO::FETCH_ASSOC); 
+
+            if ($task) {
+                $statusMap = [
+                    'pending' => 'Pendiente',
+                    'in_progress' => 'En proceso',
+                    'completed' => 'Completada'
+                ];
+                
+                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
+    
+                return $task;
+            } else {
+                return null; 
+            }
+
+        } catch (PDOException $e) {
+            error_log("Error fetching the id: " . $e->getMessage());
+            return false;
+        }
+        
     }
 }

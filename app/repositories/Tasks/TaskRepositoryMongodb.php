@@ -51,16 +51,6 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         }
     }
 
-    public function getById($id) {
-        try {
-            $objectId = new \MongoDB\BSON\ObjectId($id);
-            return $this->collection->findOne(['_id' => $objectId]);
-        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
-            error_log("Error fetching the _id: " . $e->getMessage());
-            return null;
-        }
-    }
-
     public function save(array $data) {
 
         try {
@@ -105,5 +95,40 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
             return false;
         }
     }
+
+    public function getById($id) {
+        try {
+            $objectId = new \MongoDB\BSON\ObjectId($id);
+            return $this->collection->findOne(['_id' => $objectId]);
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            error_log("Error fetching the _id: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getByName($name) {
+        try {
+            $task = $this->collection->findOne(['name' => $name]);
+    
+            if ($task) {
+                $statusMap = [
+                    'pending' => 'Pendiente',
+                    'in_progress' => 'En proceso',
+                    'completed' => 'Completada'
+                ];
+                
+                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
+    
+                return $task;
+            } else {
+                return null; 
+            }
+    
+        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            error_log("Error fetching task by name: " . $e->getMessage());
+            return null;
+        }
+    }
+    
     
 }
