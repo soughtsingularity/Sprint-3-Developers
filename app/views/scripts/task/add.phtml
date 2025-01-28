@@ -1,44 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Añadir Tarea</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 text-gray-200 min-h-screen">
-
-  <header class="bg-gray-800 py-4 shadow-md w-full fixed top-0 z-50">
-    <div class="container mx-auto flex items-center justify-center gap-8 px-6">
-      
-      <button 
-        onclick="window.location.href='<?php echo WEB_ROOT; ?>/index.php/tasks/list';"
-        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-        Home
-      </button>
-
-      <button 
-        onclick="window.location.href='<?php echo WEB_ROOT;?>/';"
-        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-        Nuevo usuario en el equipo
-      </button>
-
-      <form action="<?= $this->baseUrl() ?>/index.php/tasks/list" method="POST" class="flex items-center">
-    <div class="flex-1 max-w-md">
-        <input 
-            type="text" 
-            name="taskName"
-            placeholder="Buscar tarea" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
-            required>
-    </div>
-    <button type="submit" class="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-        Buscar
-    </button>
-</form>
-    </div>
-  </header>
-
   <div class="flex items-center justify-center h-screen pt-20">
     <div class="container max-w-lg w-full bg-gray-800 shadow-lg rounded-lg p-8">
       
@@ -140,7 +99,4 @@
       }
     }, 2000)
   </script>
-
-</body>
-</html>
 

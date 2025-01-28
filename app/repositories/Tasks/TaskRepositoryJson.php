@@ -198,42 +198,47 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
         }
     }
 
-    public function getByName($name){
-
-        try{
-
-            $jsonData = file_get_contents($this->filePath);
-
-            if($jsonData === false){
-                throw new Exception("Error reading data from: " . $this->filePath);
+    public function getByName($name) {
+        try {
+            if (empty($name)) {
+                throw new InvalidArgumentException("Nombre no proporcionado");
             }
-
-            $data = json_decode($jsonData, true);
-
+    
+            $jsonData = file_get_contents($this->filePath); // Asegúrate de que $this->filePath sea correcto
+            $tasks = json_decode($jsonData, true);
+    
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error decoding JSON: " . json_last_error_msg());
             }
-
-            foreach ($data as $task) {
-                if (isset($task['name']) && $task['name'] == $name) {
+    
+            $statusMap = [
+                'pending' => 'Pendiente',
+                'in_progress' => 'En proceso',
+                'completed' => 'Completada'
+            ];
+    
+            foreach ($tasks as $item) {
+                if (isset($item['name']) && $item['name'] == $name) {
+                    // Mapear el estado al español
+                    $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
+    
                     return [
-                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
-                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
-                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
-                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
-                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                        'name' => $item['name'] ?? 'undefined',
+                        'status' => $item['status'],
+                        'startDate' => $item['startDate'] ?? 'undefined',
+                        'endDate' => $item['endDate'] ?? 'undefined',
+                        'user' => $item['user'] ?? 'undefined',
+                        'id' => $item['id'] ?? 'undefined'
                     ];
                 }
             }
-
+    
+            // Si no se encuentra la tarea, devuelve null
             return null;
-
-        }catch(Exception $e){
-
-            error_log("Error fetching task by id: " . $e->getMessage());
+    
+        } catch (Exception $e) {
+            error_log("Error fetching task by name: " . $e->getMessage());
             return null;
-
         }
-    }
+    }    
 } 

@@ -36,6 +36,7 @@ class TaskController extends Controller {
             } else {
                 $this->view->tasks = $this->taskRepository->getAll();
             }
+
         } catch (Exception $e) {
             error_log("Error loading tasks list: " . $e->getMessage());
             $_SESSION['error_message'] = "Error cargando la lista de tareas.";
