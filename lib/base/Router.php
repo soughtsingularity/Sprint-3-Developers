@@ -29,9 +29,9 @@ class Router
 	
 			$controller->execute($action);
 	
-		} catch(Exception $exception) {
-			if (strpos($exception->getMessage(), "Tipo de repositorio no válido") !== false) {
-				error_log("Repositorio no definido en " . __FILE__ . " línea " . __LINE__);
+		} catch(Exception $e) {
+			if (strpos($e->getMessage(), "Tipo de repositorio no válido") !== false) {
+				error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
 				$_SESSION['init_error_message'] = "Error al iniciar la aplicación.";
 				header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
 				exit();

@@ -66,7 +66,7 @@ class TaskController extends Controller {
                 throw new \Exception("ID de tarea no proporcionado.");
             }
     
-            // Validar y convertir el ID (ObjectId para MongoDB o entero para MySQL)
+            
             if (preg_match('/^[0-9a-fA-F]{24}$/', $id)) {
                 $taskId = new \MongoDB\BSON\ObjectId($id);
             } elseif (is_numeric($id)) {
@@ -145,7 +145,6 @@ class TaskController extends Controller {
         header("Location: " . $redirectUrl);
         exit();
     }
-    
     
     public function deleteAction() {
 

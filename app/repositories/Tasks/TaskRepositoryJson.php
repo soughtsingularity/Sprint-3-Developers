@@ -6,18 +6,21 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     private $filePath;
 
     public function __construct(){
+
         $this->filePath = ROOT_PATH . "/app/data/Tasks.json";
-
-        try{
-
-            if(!file_exists($this->filePath)){
-                file_put_contents($this->filePath, json_encode([]));
+    
+        try {
+            if (!file_exists($this->filePath)) {
+                if (file_put_contents($this->filePath, json_encode([])) === false) {
+                    throw new Exception("No se pudo crear el archivo de tareas en: " . $this->filePath);
+                }
             }
-
-        }catch (Exception $e) {
-            error_log("Error fetching the JSON data " . $e->getMessage());
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return false;
         }
     }
+    
 
     public static function getInstance(){
         if(self::$_instance === null){
@@ -30,49 +33,105 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     private function readData(){
         try {
             $data = file_get_contents($this->filePath);
-            return json_decode($data, true) ?? [];
+            if ($data === false) {
+                throw new Exception("No se pudo leer el archivo de tareas en: " . $this->filePath);
+            }
+    
+            $decodedData = json_decode($data, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+            }
+    
+            return $decodedData ?? [];
         } catch (Exception $e) {
-            error_log("Error reading data from JSON: " . $e->getMessage());
+            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
     
+    
     private function writeData($data){
 
-        try{
+        try {
+            if (file_put_contents($this->filePath, json_encode($data, JSON_PRETTY_PRINT)) === false) {
+                throw new Exception("No se pudo escribir en el archivo JSON: " . $this->filePath);
+            }
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return false; 
+        }
+    }
 
-            if(file_put_contents($this->filePath, json_encode($data, JSON_PRETTY_PRINT)) === false){
-                throw new Exception("Failed to write data to JSON file in ");
+    public function save(array $data) {
+        try {
+            $dataSet = $this->readData();
+    
+            if ($dataSet === null) {
+                throw new Exception("No se pudieron cargar los datos para guardar la tarea.");
             }
 
-        }catch(Exception $e){
-            error_log("Error writing data in JSON: " . $e->getMessage());
+            if (!isset($data['status'])) {
+                throw new Exception("El estado de la tarea es obligatorio.");
+            }
+
+            TaskStatus::validate($data['status']);
+    
+            foreach ($dataSet as $task) {
+                if ($task['id'] === $data['id']) {
+                    return [
+                        'id' => $data['id'],
+                        'action' => 'exists'
+                    ]; 
+                }
+            }
+    
+            $isUpdate = false;
+    
+            if (isset($data['id'])) {
+                foreach ($dataSet as &$item) {
+                    if ($item['id'] == $data['id']) {
+                        $item = array_merge($item, $data);
+                        $isUpdate = true;
+                    }
+                }
+            } else {
+                $data['id'] = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;
+                $dataSet[] = $data;
+            }
+    
+            $this->writeData($dataSet);
+    
+            return [
+                'id' => $data['id'],
+                'action' => $isUpdate ? 'updated' : 'created'
+            ];
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
         }
     }
     
+    
+    
     public function getAll() {
 
         try {
-
             $jsonData = file_get_contents($this->filePath);
-            
             if ($jsonData === false) {
                 throw new Exception("No se pudo leer el archivo: " . $this->filePath);
             }
     
             $data = json_decode($jsonData, true);
-    
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
-
+    
             $statusMap = [
                 'pending' => 'Pendiente',
                 'in_progress' => 'En proceso',
                 'completed' => 'Completada'
             ];
-            
+    
             $tasks = array_map(function($task) use ($statusMap) {
                 return [
                     'name' => isset($task['name']) ? $task['name'] : 'undefined',
@@ -85,96 +144,25 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                     'id' => isset($task['id']) ? $task['id'] : 'undefined'
                 ];
             }, $data);
-            
+    
             return $tasks;
-
     
         } catch (Exception $e) {
-            error_log("Error fetching users: " . $e->getMessage());
+            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
     
-    public function save(array $data){
-
-        try{
-
-            $dataSet = $this->readData();
-            if(isset($data['id'])){
-                foreach($dataSet as &$item){
-                    if($item['id'] == $data['id']){
-                        $item = array_merge($item, $data);
-                        $isUpdate = true;
-                    }
-                }
-            }else{
-                $data['id'] = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;            
-                $dataSet[] = $data;
-            }
-            $this->writeData($dataSet);
-
-            $isUpdate = false;
-
-            return [
-                'id' => $data['id'],
-                'action' => $isUpdate ? 'updated' : 'created'
-            ];
-
-        }catch(Exception $e){
-            error_log("Error saving task: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function delete($id) {
-        try {
-
-            $dataSet = $this->readData();
-    
-            $indexToRemove = null;
-            foreach ($dataSet as $index => $task) {
-                if ($task['id'] == $id) {
-                    $indexToRemove = $index;
-                    break;
-                }
-            }
-    
-            if ($indexToRemove === null) {
-                return false;
-            }
-    
-            unset($dataSet[$indexToRemove]);
-    
-            
-            $dataSet = array_values($dataSet); 
-            foreach ($dataSet as $key => &$task) {
-                $task['id'] = $key + 1;  
-            }
-    
-            $this->writeData($dataSet);
-    
-            return true;  
-    
-        } catch (Exception $e) {
-            error_log("Error al eliminar la tarea: " . $e->getMessage());
-            return false;
-            
-        }
-    }
-
     public function getById($id) {
         try {
-
             $jsonData = file_get_contents($this->filePath);
-    
             if ($jsonData === false) {
-                throw new Exception("Error reading data from: " . $this->filePath);
+                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
             }
     
             $data = json_decode($jsonData, true);
-    
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("Error decoding JSON: " . json_last_error_msg());
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
     
             foreach ($data as $task) {
@@ -190,13 +178,15 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 }
             }
     
+            error_log("Error: No se encontró la tarea con ID: " . $id . " en " . __FILE__ . " línea " . __LINE__);
             return null;
     
         } catch (Exception $e) {
-            error_log("Error fetching task by id: " . $e->getMessage());
+            error_log("Error al obtener tareas por id: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
+    
 
     public function getByName($name) {
         try {
@@ -204,11 +194,14 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 throw new InvalidArgumentException("Nombre no proporcionado");
             }
     
-            $jsonData = file_get_contents($this->filePath); 
-            $tasks = json_decode($jsonData, true);
+            $jsonData = file_get_contents($this->filePath);
+            if ($jsonData === false) {
+                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+            }
     
+            $tasks = json_decode($jsonData, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("Error decoding JSON: " . json_last_error_msg());
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
     
             $statusMap = [
@@ -219,7 +212,6 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     
             foreach ($tasks as $item) {
                 if (isset($item['name']) && $item['name'] == $name) {
-                    // Mapear el estado al español
                     $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
     
                     return [
@@ -233,12 +225,50 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 }
             }
     
-            // Si no se encuentra la tarea, devuelve null
+            error_log("Error: No se encontró ninguna tarea con el nombre: " . $name . " en " . __FILE__ . " línea " . __LINE__);
             return null;
     
         } catch (Exception $e) {
-            error_log("Error fetching task by name: " . $e->getMessage());
+            error_log("Error al obtener tareas por nombre: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
-    }    
+    }
+
+    public function delete($id) {
+        try {
+            $dataSet = $this->readData();
+            if ($dataSet === null) {
+                throw new Exception("No se pudieron cargar los datos para eliminar la tarea con ID: " . $id);
+            }
+    
+            $indexToRemove = null;
+            foreach ($dataSet as $index => $task) {
+                if ($task['id'] == $id) {
+                    $indexToRemove = $index;
+                    break;
+                }
+            }
+    
+            if ($indexToRemove === null) {
+                error_log("Error: No se encontró la tarea con ID: " . $id . " en " . __FILE__ . " línea " . __LINE__);
+                return false;
+            }
+    
+            unset($dataSet[$indexToRemove]);
+    
+            $dataSet = array_values($dataSet); 
+            foreach ($dataSet as $key => &$task) {
+                $task['id'] = $key + 1;  
+            }
+    
+            $this->writeData($dataSet);
+    
+            return true;  
+    
+        } catch (Exception $e) {
+            error_log("Error al eliminar la tarea: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return false;
+        }
+    }
+       
 } 

@@ -4,14 +4,14 @@
     <div class="container max-w-3xl w-full bg-gray-800 shadow-lg rounded-lg p-8">
 
       <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
+        <div id="success-message" class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
           <?= $_SESSION['success_message']; ?>
         </div>
         <?php unset($_SESSION['success_message']); ?>
       <?php endif; ?>
 
       <?php if (isset($_SESSION['error_message'])): ?>
-        <div class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
+        <div id="error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
           <?= $_SESSION['error_message']; ?>
         </div>
         <?php unset($_SESSION['error_message']); ?>

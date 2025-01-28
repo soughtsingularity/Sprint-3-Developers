@@ -1,10 +1,10 @@
 [
     {
-        "id": 1,
-        "name": "Sacar el perro",
+        "id": "1",
+        "name": "root22",
         "status": "completed",
-        "startDate": "2025-01-15",
+        "startDate": "2025-01-16",
         "endDate": "2025-01-23",
-        "user": "ramonolivernewsletter@gmail.com"
+        "user": "prueba@gmail.com"
     }
 ]

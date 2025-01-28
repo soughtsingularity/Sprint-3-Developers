@@ -15,11 +15,11 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
             $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
                                        ->selectCollection('users');
         } catch (\MongoDB\Exception\Exception $e) {
-            error_log("MongoDB connection error: " . $e->getMessage());
-            throw new \Exception("Error al conectar con la base de datos.");
+            error_log("MongoDB connection error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            throw new \Exception("Error al conectar con la base de datos. Detalles: " . $e->getMessage());
         }
-        
     }
+    
 
     public static function getInstance(){
         if(self::$_instance === null){
@@ -29,36 +29,49 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
         return self::$_instance;
     }
 
-    public function save($email)
-    {
-        try{
-
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                error_log("Intento de guardar usuario con email inválido: " . $email);
-                throw new Exception("El email no es válido.");
-            }
-
-            $existingUser = $this->collection->findOne(['email' => $email]);
+    public function save($email) {
+        try {
+            // Leer datos del archivo JSON
+            $dataSet = $this->readData();
     
-            if ($existingUser) {
-                error_log("Intento de guardar un usuario existente: " . $email);
-                throw new Exception("El usuario ya existe."); 
+            // Asegurarse de que el archivo no sea nulo
+            if ($dataSet === null) {
+                $dataSet = []; // Si está vacío, inicializar como arreglo vacío
             }
-        
-            $result = $this->collection->insertOne([
-                'email' => $email
-            ]);
-        
-            return ($result->getInsertedCount() > 0) ? true : false;
-
-        }catch(\MongoDB\Exception\Exception | \Exception $e){
-            error_log("Error al guardar al usuario " . $e->getMessage());
-            return false; 
+    
+            // Validar si el email ya existe
+            foreach ($dataSet as $user) {
+                if (isset($user['email']) && strtolower(trim($user['email'])) === strtolower(trim($email))) {
+                    // Si el email ya existe
+                    $_SESSION['newUser'] = $email;
+                    return false; // Usuario ya existe
+                }
+            }
+    
+            // Si no encontró el email, crea un nuevo usuario
+            $newId = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;
+            $newUser = [
+                'id' => $newId,
+                'email' => trim($email)
+            ];
+    
+            $dataSet[] = $newUser;
+    
+            // Escribir datos en el archivo JSON
+            if ($this->writeData($dataSet)) {
+                $_SESSION['newUser'] = $email;
+                return true; // Usuario nuevo creado correctamente
+            }
+    
+            // Si no se puede escribir en el archivo
+            throw new Exception("Error al guardar el nuevo usuario.");
+        } catch (Exception $e) {
+            error_log("Error al guardar usuario en JSON: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return false; // Retorna false en caso de error
         }
-
     }
     
-
+    
 
     public function getAll() {
         try {
@@ -72,8 +85,9 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
     
             return $users;
         } catch (\MongoDB\Exception\Exception $e) {
-            error_log("Error fetching users: " . $e->getMessage());
+            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
+    
 }

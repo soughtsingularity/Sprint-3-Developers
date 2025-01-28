@@ -44,6 +44,12 @@ spl_autoload_register(function ($className) {
         return;
     }
 
+    $file = __DIR__ . '/../app/enums/' . $className . '.php';
+    if (file_exists($file)) {
+        require_once $file;
+        return;
+    }
+
 	$repositoryPaths = [
         __DIR__ . '/../app/repositories/' . $className . '.php',
         __DIR__ . '/../app/repositories/Users/' . $className . '.php', 
