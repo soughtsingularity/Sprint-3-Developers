@@ -4,19 +4,10 @@ class UserController extends Controller {
 
     private $userRepository;
 
-    public function __construct(){
+    public function __construct()
+    {
 
-        try{
-
-            $this->userRepository = UserRepositoryFactory::create();    
-
-        }catch(Exception $e){
-            error_log("Error initializing the repository: " . $e->getMessage());
-            $_SESSION['error_message'] = "Error al iniciar la aplicación";
-            header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
-            exit();
-
-        }
+        $this->userRepository = UserRepositoryFactory::create();
     }
 
     public function registerAction() {

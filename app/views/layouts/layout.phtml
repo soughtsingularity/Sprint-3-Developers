@@ -43,5 +43,25 @@
   <?= $this->_content ?>
   </main>
 
+  <script>
+    
+    setTimeout(() => {
+      const successMessage = document.getElementById('success-message');
+      if (successMessage) {
+        successMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
+      }
+    }, 2000);
+
+    setTimeout(() =>{
+      const errorMessage = document.getElementById("error-message");
+      if(errorMessage){
+        errorMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
+      }
+    }, 2000);
+  </script>
+
 </body>
+
 </html>

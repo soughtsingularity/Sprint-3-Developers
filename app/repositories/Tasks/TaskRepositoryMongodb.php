@@ -11,8 +11,10 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
         try {
             $client = new Client($settings['mongodb']['uri']);
+            
             $this->collection = $client->selectDatabase($settings['mongodb']['dbname'])
                 ->selectCollection('tasks');
+
         } catch (\MongoDB\Exception\RuntimeException $e) {
             error_log("MongoDB connection error: " . $e->getMessage());
             

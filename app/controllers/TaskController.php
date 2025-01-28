@@ -5,38 +5,27 @@ class TaskController extends Controller {
     private $taskRepository;
 
     public function __construct(){
+  
+        $this->taskRepository = TaskRepositoryFactory::create();
 
-        try{
-            
-            $this->taskRepository = TaskRepositoryFactory::create();
-
-
-        }catch(Exception $e){
-
-            error_log("Error initializing the repository: " . $e->getMessage());
-            $_SESSION['error_message'] = "Error al iniciar la aplicación";
-            header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
-            exit();
-        }
     }
 
     public function listAction() {
-
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskName']) && !empty(trim($_POST['taskName']))) {
                 $taskName = trim($_POST['taskName']);
                 $tasks = $this->taskRepository->getByName($taskName);
-        
+    
                 if ($tasks) {
-                    $this->view->tasks = [$tasks];  
+                    $this->view->tasks = [$tasks];
                 } else {
-                    $this->view->error = "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName);
-                    $this->view->tasks = [];
+                    $_SESSION['error_message'] = "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName);
+                    header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+                    exit();
                 }
             } else {
                 $this->view->tasks = $this->taskRepository->getAll();
             }
-
         } catch (Exception $e) {
             error_log("Error loading tasks list: " . $e->getMessage());
             $_SESSION['error_message'] = "Error cargando la lista de tareas.";
@@ -52,6 +41,7 @@ class TaskController extends Controller {
             $userRepository = UserRepositoryFactory::create();
 
             if($userRepository){
+                
                 $this->view->users = $userRepository->getAll();
             }else{
                 throw new Exception("Error inicializating the repo");
@@ -63,8 +53,6 @@ class TaskController extends Controller {
             header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
             return null;
         }
-
-
     }
 
     public function editAction() {

@@ -1,67 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-    <?php 
-    ?>
 
-    <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
-        
+  <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
+      
     <?php if (isset($_SESSION['success_message']) && isset($_GET['success'])): ?>
-        <div id="success-message" class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
-            <?= $_SESSION['success_message']; ?>
-        </div>
-        <?php unset($_SESSION['success_message']); ?>
+      <div id="success-message" class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
+        <?= $_SESSION['success_message']; ?>
+      </div>
+      <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['init_error_message']) && isset($_GET['error'])): ?>
+      <div id="init-error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
+        <?= $_SESSION['init_error_message']; ?>
+      </div>
+      <?php unset($_SESSION['init_error_message']); ?>
     <?php endif; ?>
 
-    <?php if (isset($_SESSION['error_message']) && isset($_GET['error'])): ?>
-        <div id="error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
-            <?= $_SESSION['error_message']; ?>
-        </div>
-        <?php unset($_SESSION['error_message']); ?>
-    <?php endif; ?>
+    <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">Login</h1>
 
-        <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">Login</h1>
+    <form action="<?= $this->baseUrl() ?>/index.php/user/register" method="POST" class="space-y-6">
+      <div>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required 
+          class="mt-2 w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+          placeholder="Enter your email" />
+      </div>
+      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-md transition duration-300">
+        Enter
+      </button>
+    </form>
 
-        <form action="<?= $this->baseUrl() ?>/index.php/user/register" method="POST" class="space-y-6">
-            <div>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
-                    class="mt-2 w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-                    placeholder="Enter your email">
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-md transition duration-300">
-                Enter
-            </button>
-        </form>
-    </div>
-    <p><?= WEB_ROOT; ?></p>
-
-    <script>
+  </div>
+  
+  <script>
+    // Ocultar mensaje de éxito y redirigir
     setTimeout(() => {
-        const successMessage = document.getElementById('success-message');
-        if (successMessage) {
-            successMessage.style.display = 'none';
-            window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
-        }
+      const successMessage = document.getElementById('success-message');
+      if (successMessage) {
+        successMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
+      }
     }, 2000);
 
+    // Ocultar mensaje de error de inicialización y redirigir a Home
     setTimeout(() => {
-        const successMessage = document.getElementById('error-message');
-        if (successMessage) {
-            successMessage.style.display = 'none';
-            window.location.href = "<?= WEB_ROOT; ?>/";
-        }
+      const initErrorMessage = document.getElementById('init-error-message');
+      if (initErrorMessage) {
+        initErrorMessage.style.display = 'none';
+        window.location.href = "<?= WEB_ROOT; ?>/";
+      }
     }, 2000);
-</script>
+  </script>
 </body>
 </html>
+
+    
+
+
+
+
 

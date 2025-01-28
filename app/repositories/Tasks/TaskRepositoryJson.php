@@ -42,7 +42,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
         try{
 
             if(file_put_contents($this->filePath, json_encode($data, JSON_PRETTY_PRINT)) === false){
-                throw new Exception("Failed to write data to JSON file.");
+                throw new Exception("Failed to write data to JSON file in ");
             }
 
         }catch(Exception $e){
@@ -204,7 +204,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 throw new InvalidArgumentException("Nombre no proporcionado");
             }
     
-            $jsonData = file_get_contents($this->filePath); // Asegúrate de que $this->filePath sea correcto
+            $jsonData = file_get_contents($this->filePath); 
             $tasks = json_decode($jsonData, true);
     
             if (json_last_error() !== JSON_ERROR_NONE) {
