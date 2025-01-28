@@ -2,7 +2,16 @@
 
 error_reporting(E_ALL|E_STRICT);
 ini_set('display_errors', 1);
+ini_set('error_log', __DIR__ . '/../logs/app_errors.log');
 date_default_timezone_set('Europe/Madrid');
+
+// Definir la ruta del archivo de logs
+define('LOG_FILE', __DIR__ . '/../logs/app_errors.log');
+
+// Función para registrar errores
+function logError($message, $file, $line) {
+    error_log("[" . date('Y-m-d H:i:s') . "] ERROR en $file línea $line: $message");
+}
 
 // defines the web root
 define('WEB_ROOT', substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], '/index.php')));

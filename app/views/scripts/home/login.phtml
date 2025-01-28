@@ -53,6 +53,14 @@
             window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
         }
     }, 2000);
+
+    setTimeout(() => {
+        const successMessage = document.getElementById('error-message');
+        if (successMessage) {
+            successMessage.style.display = 'none';
+            window.location.href = "<?= WEB_ROOT; ?>/";
+        }
+    }, 2000);
 </script>
 </body>
 </html>

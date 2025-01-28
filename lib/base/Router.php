@@ -9,39 +9,41 @@ class Router
 	 * Executes the system routing
 	 * @throws Exception
 	 */
-	public function execute($routes)
-	{
-
-		// tries to find the route and run the given action on the controller
+	public function execute($routes) {
 		try {
-			// the controller and action to execute
 			$controller = null;
 			$action = null;
-			
-			// tries to find a simple route
+	
 			$routeFound = $this->_getSimpleRoute($routes, $controller, $action);
 			
 			if (!$routeFound) {
-				// tries to find the a matching "parameter route"
 				$routeFound = $this->_getParameterRoute($routes, $controller, $action);
 			}
-			
-			// no route found, throw an exception to run the error controller
+	
 			if (!$routeFound || $controller == null || $action == null) {
-				throw new Exception('no route added for ' . $_SERVER['REQUEST_URI']);
+				error_log("Error: Ruta no definida en " . __FILE__ . " línea " . __LINE__);
+				$_SESSION['error_message'] = "Ruta no definida.";
+				header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+				exit();
 			}
-			else {
-				// executes the action on the controller
-				$controller->execute($action);
+	
+			$controller->execute($action);
+	
+		} catch(Exception $exception) {
+			if (strpos($exception->getMessage(), "Tipo de repositorio no válido") !== false) {
+				error_log("Repositorio no definido en " . __FILE__ . " línea " . __LINE__);
+				$_SESSION['error_message'] = "Error al iniciar la aplicación.";
+				header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+				exit();
 			}
-		}
-		catch(Exception $exception) {
-			// runs the error controller
+	
 			$controller = new ErrorController();
 			$controller->setException($exception);
 			$controller->execute('error');
 		}
 	}
+	
+	
 	
 	/**
 	 * Tests if a route has parameters

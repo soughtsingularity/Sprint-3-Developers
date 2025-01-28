@@ -1,18 +1,1 @@
-[
-    {
-        "id": 1,
-        "name": "teqkat",
-        "status": "in_progress",
-        "startDate": "2025-01-02",
-        "endDate": "2025-01-23",
-        "user": "yepayepa@gmail.com"
-    },
-    {
-        "id": 2,
-        "name": "teqkat",
-        "status": "completed",
-        "startDate": "2025-01-14",
-        "endDate": "2025-01-31",
-        "user": "yepayepa@gmail.com"
-    }
-]
+[]

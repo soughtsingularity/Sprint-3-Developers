@@ -2,29 +2,40 @@
 
 class TaskController extends Controller {
 
+    private $taskRepository;
+
+    public function __construct(){
+
+        try{
+            
+            $this->taskRepository = TaskRepositoryFactory::create();
+
+
+        }catch(Exception $e){
+
+            error_log("Error initializing the repository: " . $e->getMessage());
+            $_SESSION['error_message'] = "Error al iniciar la aplicación";
+            header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+            exit();
+        }
+    }
+
     public function listAction() {
+
         try {
-            $taskRepository = TaskRepositoryFactory::create();
-    
-            if (!$taskRepository) {
-                throw new Exception("Error initializing the repository.");
-            }
-    
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskName']) && !empty(trim($_POST['taskName']))) {
                 $taskName = trim($_POST['taskName']);
-                $tasks = $taskRepository->getByName($taskName);
-    
+                $tasks = $this->taskRepository->getByName($taskName);
+        
                 if ($tasks) {
-                    $this->view->tasks = [$tasks];  // Convertir a array para ser compatible con la vista
+                    $this->view->tasks = [$tasks];  
                 } else {
                     $this->view->error = "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName);
                     $this->view->tasks = [];
                 }
             } else {
-                // Si no se envía un nombre, mostrar todas las tareas
-                $this->view->tasks = $taskRepository->getAll();
+                $this->view->tasks = $this->taskRepository->getAll();
             }
-    
         } catch (Exception $e) {
             error_log("Error loading tasks list: " . $e->getMessage());
             $_SESSION['error_message'] = "Error cargando la lista de tareas.";
@@ -33,8 +44,6 @@ class TaskController extends Controller {
         }
     }
     
-    
-
     public function addAction(){
 
         try{

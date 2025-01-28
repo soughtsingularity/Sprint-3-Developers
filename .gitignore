@@ -7,7 +7,7 @@
 .phpunit.result.cache
 
 # Logs and temporary files
-/storage/logs/*
+/logs/*
 /storage/framework/sessions/*
 /storage/framework/views/*
 /storage/framework/cache/*
