@@ -1,29 +1,2 @@
 [
-    {
-        "id": 1,
-        "name": "Sacar el perro",
-        "status": "in_progress",
-        "startDate": "2025-01-30",
-        "endDate": "2025-01-08",
-        "user": "root@gmail.com",
-        "userId": "3"
-    },
-    {
-        "id": 2,
-        "name": "Sacar el perro",
-        "status": "in_progress",
-        "startDate": "2025-01-14",
-        "endDate": "2025-01-30",
-        "user": "prueba@gmail.com",
-        "userId": "4"
-    },
-    {
-        "id": 3,
-        "name": "teqkat",
-        "status": "completed",
-        "startDate": "2025-01-15",
-        "endDate": "2025-01-29",
-        "user": "root@gmail.com",
-        "userId": "3"
-    }
 ]

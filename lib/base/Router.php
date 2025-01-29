@@ -38,7 +38,7 @@ class Router
 			}
 	
 			$controller = new ErrorController();
-			$controller->setException($exception);
+			$controller->setException($e);
 			$controller->execute('error');
 		}
 	}
@@ -171,16 +171,8 @@ class Router
 	protected function _initializeController($name)
 	{
 
-
 		// initializes the controller
 		$controller = ucfirst($name) . 'Controller';
-
-		if ($controller === 'UserController') {
-			require_once __DIR__ . '/../../app/repositories/Users/UserRepositoryFactory.php';
-			
-			$userRepository = UserRepositoryFactory::create();
-			return new UserController($userRepository);
-		}
 	
 		// Construcción genérica de otros controladores
 		return new $controller();
