@@ -46,7 +46,7 @@ Persistencia en MOngoDB
 1. Clona este repositorio en tu máquina local.
 
 
-```git clone https://github.com/tu_usuario/nombre_del_repositorio.git```
+```git clone https://github.com/soughtsingularity/Sprint-3-Developers.git```
 
 
 2. Accede a la carpeta del proyecto.
