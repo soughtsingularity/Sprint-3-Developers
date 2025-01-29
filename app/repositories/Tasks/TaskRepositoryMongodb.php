@@ -142,31 +142,40 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
 
     public function getByName($name) {
-
         try {
-            $task = $this->collection->findOne(['name' => $name]);
+            $cursor = $this->collection->find(['name' => $name]);
     
-            if ($task) {
-                $statusMap = [
-                    'pending' => 'Pendiente',
-                    'in_progress' => 'En proceso',
-                    'completed' => 'Completada'
-                ];
+            $tasks = iterator_to_array($cursor);
     
-                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
-    
-                return $task;
-
-            } else {
-                error_log("Error: No se encontró la tarea con el nombre: {$name} en " . __FILE__ . " línea " . __LINE__);
-                return null;
+            if (empty($tasks)) {
+                error_log("Error: No se encontraron tareas con el nombre: {$name}");
+                return [];
             }
     
-        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
-            error_log("Error al obtener tareas por nombre: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            $statusMap = [
+                'pending' => 'Pendiente',
+                'in_progress' => 'En proceso',
+                'completed' => 'Completada'
+            ];
+    
+            return array_map(function($task) use ($statusMap) {
+                return [
+                    'id' => (string) $task['_id'],
+                    'name' => $task['name'],
+                    'status' => $statusMap[$task['status']] ?? 'Desconocido',
+                    'startDate' => $task['startDate'] ?? 'Desconocido',
+                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'user' => $task['user'] ?? 'Desconocido'
+                ];
+            }, $tasks);
+    
+        } catch (\MongoDB\Exception\Exception $e) {
+            error_log("Error al obtener tareas por nombre: " . $e->getMessage());
             return null;
         }
     }
+    
+    
     
     public function delete($id)
     {

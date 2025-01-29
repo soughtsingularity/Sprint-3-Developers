@@ -18,7 +18,7 @@ class TaskController extends Controller {
                 $tasks = $this->taskRepository->getByName($taskName);
     
                 if ($tasks) {
-                    $this->view->tasks = [$tasks];
+                    $this->view->tasks = $tasks;
                 } else {
 
                     throw new Exception("No se encontraron tareas con el nombre: " . htmlspecialchars($taskName));

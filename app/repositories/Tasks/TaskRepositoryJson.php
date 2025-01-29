@@ -214,27 +214,33 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 'completed' => 'Completada'
             ];
     
+            $matchingTasks = [];
+
             foreach ($tasks as $item) {
                 if (isset($item['name']) && $item['name'] == $name) {
                     $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
     
-                    return [
+                    $matchingTasks[] = [
+                        'id' => $item['id'] ?? 'undefined',
                         'name' => $item['name'] ?? 'undefined',
                         'status' => $item['status'],
                         'startDate' => $item['startDate'] ?? 'undefined',
                         'endDate' => $item['endDate'] ?? 'undefined',
-                        'user' => $item['user'] ?? 'undefined',
-                        'id' => $item['id'] ?? 'undefined'
+                        'user' => $item['user'] ?? 'undefined'
                     ];
                 }
             }
     
-            error_log("Error: No se encontró ninguna tarea con el nombre: " . $name . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+            if (empty($matchingTasks)) {
+                error_log("Error: No se encontraron tareas con el nombre: " . $name);
+                return [];
+            }
+    
+            return $matchingTasks;
     
         } catch (Exception $e) {
             error_log("Error al obtener tareas por nombre: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+            return [];
         }
     }
 
