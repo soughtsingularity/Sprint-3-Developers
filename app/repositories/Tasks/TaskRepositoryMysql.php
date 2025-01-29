@@ -19,11 +19,12 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log("Error de conexión a la base de datos: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            throw $e;  
+            return false;
         }
     }
 
     public static function getInstance(){
+
         if(self::$_instance === null){
             self::$_instance = new self();
         }
@@ -32,6 +33,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     }
 
     public function save(array $data) {
+
         try {
             if (isset($data['id']) && !empty($data['id'])) {
 
@@ -47,7 +49,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                                                      status = :status, 
                                                      startDate = :startDate, 
                                                      endDate = :endDate, 
-                                                     user = :user 
+                                                     user = :user,
+                                                     userId = :userId
                                                  WHERE id = :id");
     
                     $stmt->execute([
@@ -56,7 +59,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                         ':status' => $data['status'],
                         ':startDate' => $data['startDate'],
                         ':endDate' => $data['endDate'],
-                        ':user' => $data['user']
+                        ':user' => $data['user'],
+                        ':userId' => $data['userId'],
                     ]);
     
                     if ($stmt->rowCount() > 0) {
@@ -68,15 +72,16 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             }
     
             
-            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user) 
-                                         VALUES (:name, :status, :startDate, :endDate, :user)");
+            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user, userId) 
+                                         VALUES (:name, :status, :startDate, :endDate, :user, :userId)");
     
             $stmt->execute([
                 ':name' => $data['name'],
                 ':status' => $data['status'],
                 ':startDate' => $data['startDate'],
                 ':endDate' => $data['endDate'],
-                ':user' => $data['user']
+                ':user' => $data['user'],
+                ':userId' => $data['userId'],
             ]);
     
             return $this->pdo->lastInsertId();  
@@ -88,13 +93,14 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     }
 
     public function getAll() {
+
         try {
             $stmt = $this->pdo->query("SELECT id, name, status, 
                               DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
                               DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
                               user FROM tasks");  
     
-            $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
             $statusMap = [
                 'pending' => 'Pendiente',
@@ -102,28 +108,39 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 'completed' => 'Completada'
             ];
     
-            foreach ($tasks as &$task) {
-                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
-            }
+            $tasks = array_map(function($task) use ($statusMap) {
+                return [
+                    'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
+                        ? $statusMap[$task['status']] 
+                        : 'Desconocido',
+                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
+                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
+                    'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
+                    'id' => isset($task['id']) ? $task['id'] : 'Desconocido'
+                ];
+            }, $data);
     
             return $tasks;
-        } catch (PDOException $e) {
+
+            } catch (PDOException $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
 
     public function getById($id){
+
         try {
             if (empty($id)) {
                 throw new InvalidArgumentException("ID no proporcionado");
             }
             
             $sql = 'SELECT * FROM tasks WHERE id = ?';
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute([$id]);
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$id]);
     
-            return $statement->fetch(PDO::FETCH_ASSOC); 
+            return $stmt->fetch(PDO::FETCH_ASSOC); 
     
         } catch (PDOException $e) {
             error_log("Error al obtener el id {$id}: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
@@ -138,10 +155,10 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 throw new InvalidArgumentException("Nombre no proporcionado");
             }
             
-            $sql = 'SELECT * FROM tasks WHERE name = ?';
-            $statement = $this->pdo->prepare($sql);
-            $statement->execute([$name]);
-            $task = $statement->fetch(PDO::FETCH_ASSOC); 
+            $query = 'SELECT * FROM tasks WHERE name = ?';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$name]);
+            $task = $stmt->fetch(PDO::FETCH_ASSOC); 
     
             if ($task) {
                 $statusMap = [
@@ -165,6 +182,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     }
 
     public function delete($id) {
+
         try {
             $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
             $stmt->execute([':id' => $id]);

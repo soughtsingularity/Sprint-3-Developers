@@ -8,6 +8,7 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
     protected $collection;
 
     public function __construct(){
+
         $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
         
         try {
@@ -20,8 +21,8 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
         }
     }
     
-
     public static function getInstance(){
+        
         if(self::$_instance === null){
             self::$_instance = new self();
         }
@@ -30,50 +31,37 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
     }
 
     public function save($email) {
+
         try {
-            // Leer datos del archivo JSON
-            $dataSet = $this->readData();
+
+            $email = strtolower(trim($email));
     
-            // Asegurarse de que el archivo no sea nulo
-            if ($dataSet === null) {
-                $dataSet = []; // Si está vacío, inicializar como arreglo vacío
-            }
+            $existingUser = $this->collection->findOne(['email' => $email]);
     
-            // Validar si el email ya existe
-            foreach ($dataSet as $user) {
-                if (isset($user['email']) && strtolower(trim($user['email'])) === strtolower(trim($email))) {
-                    // Si el email ya existe
-                    $_SESSION['newUser'] = $email;
-                    return false; // Usuario ya existe
-                }
-            }
-    
-            // Si no encontró el email, crea un nuevo usuario
-            $newId = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;
-            $newUser = [
-                'id' => $newId,
-                'email' => trim($email)
-            ];
-    
-            $dataSet[] = $newUser;
-    
-            // Escribir datos en el archivo JSON
-            if ($this->writeData($dataSet)) {
+            if ($existingUser) {
                 $_SESSION['newUser'] = $email;
-                return true; // Usuario nuevo creado correctamente
+                return false; 
             }
     
-            // Si no se puede escribir en el archivo
-            throw new Exception("Error al guardar el nuevo usuario.");
+            $result = $this->collection->insertOne([
+                'email' => $email
+            ]);
+    
+            if ($result->getInsertedId()) {
+                $_SESSION['newUser'] = $email;
+                return true;
+            }
+    
+            throw new Exception("Error al insertar usuario en MongoDB.");
+
         } catch (Exception $e) {
-            error_log("Error al guardar usuario en JSON: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return false; // Retorna false en caso de error
+            error_log("Error al guardar usuario en MongoDB: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return false;
         }
     }
     
-    
-
     public function getAll() {
+
         try {
             $cursor = $this->collection->find();
             $users = iterator_to_array($cursor);
@@ -84,6 +72,7 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
             }
     
             return $users;
+
         } catch (\MongoDB\Exception\Exception $e) {
             error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;

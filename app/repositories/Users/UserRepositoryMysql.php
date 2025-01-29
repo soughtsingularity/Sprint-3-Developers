@@ -6,6 +6,7 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
     private $pdo;
 
     private function __construct() {
+
         $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
     
         $host = $settings['mysql']['host'];
@@ -22,48 +23,53 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
         }
     }
     
-
     public static function getInstance() {
+
         if (self::$_instance === null) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
     public function save($email) {
+
         try {
             $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = :email");
             $stmt->execute([':email' => $email]);
     
             if ($stmt->fetch()) {
-                $_SESSION['newUser'] = $email; // Usuario existente
-                return false; // Usuario ya existe
+                $_SESSION['newUser'] = $email; 
+                return false; 
             }
     
             $stmt = $this->pdo->prepare("INSERT INTO users (email) VALUES (:email)");
             $stmt->execute(['email' => $email]);
     
             $lastInsertId = $this->pdo->lastInsertId();
+
             if ($lastInsertId) {
-                $_SESSION['newUser'] = $email; // Usuario creado
+                $_SESSION['newUser'] = $email; 
                 return true;
             }
     
             throw new Exception("No se pudo insertar el usuario.");
+
         } catch (PDOException $e) {
             error_log("Error al guardar usuario: " . $e->getMessage());
             return false;
         }
     }
 
-    public function getAll() {
-        try {
-            $stmt = $this->pdo->query("SELECT email FROM users");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (\PDOException | \Exception $e) {
-            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
-        }
+public function getAll() {
+    try {
+        $stmt = $this->pdo->query("SELECT id, email FROM users");  
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (\PDOException | \Exception $e) {
+        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+        return null;
     }
+}
+
     
 }

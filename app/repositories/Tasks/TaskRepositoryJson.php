@@ -1,9 +1,11 @@
 <?php 
 
+declare(strict_types=1);
+
 class TaskRepositoryJson implements TaskRepositoryInterface{
 
     private static $_instance = null;
-    private $filePath;
+    private string $filePath;
 
     public function __construct(){
 
@@ -15,14 +17,15 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                     throw new Exception("No se pudo crear el archivo de tareas en: " . $this->filePath);
                 }
             }
+
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
         }
     }
     
-
     public static function getInstance(){
+
         if(self::$_instance === null){
             self::$_instance = new self();
         }
@@ -31,6 +34,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     }
 
     private function readData(){
+
         try {
             $data = file_get_contents($this->filePath);
             if ($data === false) {
@@ -42,13 +46,13 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
     
-            return $decodedData ?? [];
+            return $decodedData ?? false;
+
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
-    
     
     private function writeData($data){
 
@@ -65,7 +69,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     public function save(array $data) {
         try {
             $dataSet = $this->readData();
-    
+
             if ($dataSet === null) {
                 throw new Exception("No se pudieron cargar los datos para guardar la tarea.");
             }
@@ -75,43 +79,44 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             }
 
             TaskStatus::validate($data['status']);
+
+            if (!empty($data['startDate']) && !empty($data['endDate'])) {
+                $startDate = strtotime($data['startDate']);
+                $endDate = strtotime($data['endDate']);
     
-            foreach ($dataSet as $task) {
-                if ($task['id'] === $data['id']) {
-                    return [
-                        'id' => $data['id'],
-                        'action' => 'exists'
-                    ]; 
+                if ($startDate > $endDate) {
+                    throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+                }
+            }    
+
+            $isUpdate = false;
+            $updatedTask = null;
+
+            foreach ($dataSet as &$item) {
+                if ($item['id'] == $data['id']) {
+                    $item = array_merge($item, $data); 
+                    $isUpdate = true;
+                    $updatedTask = $item;
+                    break; 
                 }
             }
-    
-            $isUpdate = false;
-    
-            if (isset($data['id'])) {
-                foreach ($dataSet as &$item) {
-                    if ($item['id'] == $data['id']) {
-                        $item = array_merge($item, $data);
-                        $isUpdate = true;
-                    }
-                }
-            } else {
+
+            if (!$isUpdate) {
                 $data['id'] = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;
                 $dataSet[] = $data;
+                $updatedTask = $data;
             }
-    
+
             $this->writeData($dataSet);
-    
-            return [
-                'id' => $data['id'],
-                'action' => $isUpdate ? 'updated' : 'created'
-            ];
+
+            return $isUpdate ? $updatedTask['id'] : ['id' => $data['id'], 'action' => 'created'];
+
         } catch (Exception $e) {
-            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            error_log("Error al guardar tarea: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
         }
     }
-    
-    
+
     
     public function getAll() {
 
@@ -134,12 +139,12 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     
             $tasks = array_map(function($task) use ($statusMap) {
                 return [
-                    'name' => isset($task['name']) ? $task['name'] : 'undefined',
+                    'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
                     'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
                         ? $statusMap[$task['status']] 
                         : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
+                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
+                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
                     'user' => isset($task['user']) ? $task['user'] : 'undefined',
                     'id' => isset($task['id']) ? $task['id'] : 'undefined'
                 ];
@@ -187,7 +192,6 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
         }
     }
     
-
     public function getByName($name) {
         try {
             if (empty($name)) {

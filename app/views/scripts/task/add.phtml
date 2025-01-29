@@ -1,83 +1,98 @@
-  <div class="flex items-center justify-center h-screen pt-20">
-    <div class="container max-w-lg w-full bg-gray-800 shadow-lg rounded-lg p-8">
-      
-      <?php if (isset($_SESSION['success_message']) && isset($_GET['success'])): ?>
-        <div id="success-message" class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
-          <?= $_SESSION['success_message']; ?>
-        </div>
-        <?php unset($_SESSION['success_message']); ?>
-      <?php endif; ?>
+<div class="flex items-center justify-center h-screen pt-20">
+  <div class="container max-w-lg w-full bg-gray-800 shadow-lg rounded-lg p-8">
 
-      <?php if (isset($_SESSION['error_message']) && isset($_GET['error'])): ?>
-        <div id="error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
-          <?= $_SESSION['error_message']; ?>
-        </div>
-        <?php unset($_SESSION['error_message']); ?>
-      <?php endif; ?>
+    <?php if (isset($_SESSION['success_message']) && isset($_GET['success'])): ?>
+      <div id="success-message" class="bg-green-500 text-white p-4 rounded-md mb-4 text-center">
+        <?= $_SESSION['success_message']; ?>
+      </div>
+      <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
 
-      <div class="border-b border-gray-600 pb-4 mb-6 text-center">
-        <h1 class="text-3xl font-bold text-gray-100">Añadir Nueva Tarea</h1>
+    <?php if (isset($_SESSION['error_message']) && isset($_GET['error'])): ?>
+      <div id="error-message" class="bg-red-600 text-white p-4 rounded-md mb-4 text-center">
+        <?= $_SESSION['error_message']; ?>
+      </div>
+      <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
+
+    <div class="border-b border-gray-600 pb-4 mb-6 text-center">
+      <h1 class="text-3xl font-bold text-gray-100">Añadir Nueva Tarea</h1>
+    </div>
+
+    <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
+      <div class="mb-4">
+        <label class="block text-gray-400">Nombre de la tarea</label>
+        <input 
+          type="text" 
+          name="name" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400" 
+          required>
       </div>
 
-      <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
-        <div class="mb-4">
-          <label class="block text-gray-400">Nombre de la tarea</label>
-          <input 
-            type="text" 
-            name="name" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400" 
-            required>
-        </div>
+      <div class="mb-4">
+        <label class="block text-gray-400">Estado</label>
+        <select 
+          name="status" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+          required>
+          <option value="">Seleccione un estado</option>
+          <option value="in_progress">En progreso</option>
+          <option value="completed">Completada</option>
+          <option value="pending">Pendiente</option>
+        </select>
+      </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-400">Estado</label>
-          <select 
-            name="status" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
-            required>
-            <option value="">Seleccione un estado</option>
-            <option value="in_progress">En progreso</option>
-            <option value="completed">Completada</option>
-            <option value="pending">Pendiente</option>
-          </select>
-        </div>
+      <div class="mb-4">
+        <label class="block text-gray-400">Fecha de inicio</label>
+        <input 
+          type="date" 
+          name="startDate" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+          required>
+      </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-400">Fecha de inicio</label>
-          <input 
-            type="date" 
-            name="startDate" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
-            required>
-        </div>
+      <div class="mb-4">
+        <label class="block text-gray-400">Fecha límite</label>
+        <input 
+          type="date" 
+          name="endDate" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+          required>
+      </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-400">Fecha límite</label>
-          <input 
-            type="date" 
-            name="endDate" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
-            required>
-        </div>
+      <div class="mb-4">
+        <label class="block text-gray-400">Asignado a</label>
+        <select 
+          id="userSelect" 
+          name="userId" 
+          class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
+          required>
+          <option value="">Seleccione un usuario</option>
+          <?php foreach ($this->users as $user): ?>
+            <option value="<?= htmlspecialchars($user['id']) ?>" data-user-email="<?= htmlspecialchars($user['email']) ?>">
+              <?= htmlspecialchars($user['email']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+        <!-- Campo oculto para capturar el email -->
+        <input type="hidden" id="user" name="user" value="">
+      </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-400">Asignado a</label>
-          <select 
-            name="user" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
-            required>
-            <option value="">Seleccione un usuario</option>
-            <?php foreach ($this->users as $user): ?>
-              <option value="<?= $user['email'] ?>"><?= $user['email'] ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
+      <script>
+        document.getElementById("userSelect").addEventListener("change", function() {
+          let selectedOption = this.options[this.selectedIndex];
+          document.getElementById("user").value = selectedOption.getAttribute("data-user-email");
+        });
+      </script>
 
-        <button type="submit" 
-          class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
-          Guardar Tarea
-        </button>
-      </form>
-    </div>
+      <button type="submit" 
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md transition-all duration-300">
+        Guardar Tarea
+      </button>
+    </form>
   </div>
+</div>
+
+     
+
 

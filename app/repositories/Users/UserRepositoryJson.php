@@ -20,15 +20,17 @@ class UserRepositoryJson implements UserRepositoryInterface {
         }        
     }
     
-
     public static function getInstance() {
+
         if (self::$_instance === null) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
     private function readData() {
+
         try {
             $data = file_get_contents($this->filePath);
             if ($data === false) {
@@ -60,8 +62,6 @@ class UserRepositoryJson implements UserRepositoryInterface {
         }
     }
     
-    
-
     public function save($email) {
         try {
             $dataSet = $this->readData();
@@ -72,15 +72,13 @@ class UserRepositoryJson implements UserRepositoryInterface {
     
             error_log("Contenido actual del JSON: " . print_r($dataSet, true));
     
-            // Validar si el email ya existe
             foreach ($dataSet as $user) {
                 if ($user['email'] === $email) {
-                    $_SESSION['newUser'] = $email; // Usuario existente
-                    return false; // Usuario ya existe
+                    $_SESSION['newUser'] = $email; 
+                    return false; 
                 }
             }
     
-            // Si no encontró el email, crea un nuevo usuario
             $newId = !empty($dataSet) ? max(array_column($dataSet, 'id')) + 1 : 1;
             $newUser = [
                 'id' => $newId,
@@ -89,13 +87,11 @@ class UserRepositoryJson implements UserRepositoryInterface {
     
             $dataSet[] = $newUser;
     
-            // Intentar escribir los datos
             if ($this->writeData($dataSet)) {
-                $_SESSION['newUser'] = $email; // Usuario creado
-                return true; // Usuario nuevo creado correctamente
+                $_SESSION['newUser'] = $email; 
+                return true; 
             }
     
-            // Si falla la escritura
             throw new Exception("Error al guardar el nuevo usuario.");
         } catch (Exception $e) {
             error_log("Error al guardar usuario en JSON: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
@@ -103,34 +99,30 @@ class UserRepositoryJson implements UserRepositoryInterface {
         }
     }
     
-    
-    
-    
-
-    public function getAll() {
-
-        try {
-            $jsonData = file_get_contents($this->filePath);
-            if ($jsonData === false) {
-                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
-            }
-    
-            $data = json_decode($jsonData, true);
-    
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
-            }
-    
-            return array_map(function($user) {
-                return [
-                    'email' => isset($user['email']) ? $user['email'] : 'undefined'
-                ];
-            }, $data);
-    
-        } catch (Exception $e) {
-            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+public function getAll() {
+    try {
+        $jsonData = file_get_contents($this->filePath);
+        if ($jsonData === false) {
+            throw new Exception("No se pudo leer el archivo: " . $this->filePath);
         }
+
+        $data = json_decode($jsonData, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+        }
+
+        return array_map(function($user) {
+            return [
+                'id' => isset($user['id']) ? $user['id'] : 'undefined',  
+                'email' => isset($user['email']) ? $user['email'] : 'undefined'
+            ];
+        }, $data);
+
+    } catch (Exception $e) {
+        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+        return [];
     }
-    
+}
+
 }

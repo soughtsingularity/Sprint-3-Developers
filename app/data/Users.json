@@ -5,10 +5,14 @@
     },
     {
         "id": 2,
-        "email": "prueba@gmail.com"
+        "email": "ramonolivernewsletter@gmail.com"
     },
     {
         "id": 3,
-        "email": "FAFaDFA@GMAIL.COM"
+        "email": "root@gmail.com"
+    },
+    {
+        "id": 4,
+        "email": "prueba@gmail.com"
     }
 ]

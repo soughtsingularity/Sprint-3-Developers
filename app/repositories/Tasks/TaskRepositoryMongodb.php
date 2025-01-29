@@ -8,7 +8,9 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     protected $collection;
 
     public function __construct() {
+
         $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
+
         try {
             if (!isset($settings['mongodb']['uri'], $settings['mongodb']['dbname'])) {
                 throw new Exception("Configuración de MongoDB incompleta en settings.ini");
@@ -20,15 +22,17 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
         } catch (\MongoDB\Exception\RuntimeException $e) {
             error_log("MongoDB connection error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            throw $e;
+            return false;
+
         } catch (Exception $e) {
             error_log("Error en el constructor de TaskRepositoryMongodb: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            throw $e;
+            return false;
         }
     }
     
     
     public static function getInstance(){
+        
         if(self::$_instance === null){
             self::$_instance = new self();
         }
@@ -39,6 +43,8 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     public function save(array $data) {
 
         try {
+
+
             if (isset($data['id']) && !empty($data['id'])) {
                 $filter = ['_id' => new \MongoDB\BSON\ObjectId($data['id'])];
     
@@ -47,18 +53,25 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                 }
     
                 if (!empty($data)) {
-                    $this->collection->updateOne($filter, ['$set' => $data]);
+
+                    TaskStatus::validate($data['status']);
+
+                    $result = $this->collection->updateOne($filter, ['$set' => $data]);
+
+                    return $result;
+
                 } else {
+
                     throw new \Exception("No se proporcionaron datos para actualizar la tarea con ID: " . $filter['_id']);
                 }
     
                 return (string) $filter['_id'];
-
-                TaskStatus::validate($data['status']);
     
             } else {
+
                 unset($data['id']); 
                 $result = $this->collection->insertOne($data);
+
                 return (string) $result->getInsertedId();
             }
         } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
@@ -68,9 +81,11 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     }
 
     public function getAll() {
+
         try {
+
             $cursor = $this->collection->find();
-            $tasks = iterator_to_array($cursor);
+            $data = iterator_to_array($cursor);
     
             $statusMap = [
                 'pending' => 'Pendiente',
@@ -78,11 +93,21 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                 'completed' => 'Completada'
             ];
     
-            foreach ($tasks as &$task) {
-                $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
-            }
+            $tasks = array_map(function($task) use ($statusMap) {
+                return [
+                    'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
+                        ? $statusMap[$task['status']] 
+                        : 'Desconocido',
+                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
+                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
+                    'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
+                    'id' => isset($task['_id']) ? $task['_id'] : 'Desconocido'
+                ];
+            }, $data);
     
             return $tasks;
+
         } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
@@ -90,17 +115,25 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     }
 
     public function getById($id) {
+
         try {
+            if (empty($id)) {
+                throw new InvalidArgumentException("ID no proporcionado");
+            }
+
             $objectId = new \MongoDB\BSON\ObjectId($id);
+
             return $this->collection->findOne(['_id' => $objectId]);
+
         } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
             error_log("Error fetching the _id {$id}: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+            return false;
         }
     }
     
 
     public function getByName($name) {
+
         try {
             $task = $this->collection->findOne(['name' => $name]);
     
@@ -114,6 +147,7 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                 $task['status'] = $statusMap[$task['status']] ?? 'Desconocido';
     
                 return $task;
+
             } else {
                 error_log("Error: No se encontró la tarea con el nombre: {$name} en " . __FILE__ . " línea " . __LINE__);
                 return null;
@@ -125,14 +159,15 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         }
     }
     
-    
     public function delete($id)
     {
         try {
+
             $objectId = new \MongoDB\BSON\ObjectId($id);
             $result = $this->collection->deleteOne(['_id' => $objectId]);
     
             return $result->getDeletedCount() > 0;
+
         } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
             error_log("Error deleting task with ID {$id}: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
