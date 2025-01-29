@@ -141,8 +141,8 @@ class TaskController extends Controller {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
     
             $_SESSION['error_message'] = isset($taskData['id']) && !empty($taskData['id'])
-                ? "Hubo un problema inesperado al actualizar la tarea."
-                : "Hubo un problema inesperado al crear la tarea.";
+                ? "Hubo un problema al actualizar la tarea."
+                : "Hubo un problema al crear la tarea.";
     
             $redirectUrl = isset($taskData['id']) && !empty($taskData['id'])
                 ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"

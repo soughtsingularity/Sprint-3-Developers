@@ -35,23 +35,39 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     public function save(array $data) {
 
         try {
+
+            if (!empty($data['startDate']) && !empty($data['endDate'])) {
+                $startDate = strtotime($data['startDate']);
+                $endDate = strtotime($data['endDate']);
+    
+                if ($startDate > $endDate) {
+                    throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+                }
+            }
+
             if (isset($data['id']) && !empty($data['id'])) {
 
+                if (!empty($data['startDate']) && !empty($data['endDate'])) {
+                    $startDate = strtotime($data['startDate']);
+                    $endDate = strtotime($data['endDate']);
+        
+                    if ($startDate > $endDate) {
+                        throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+                    }
+                } 
+
                 TaskStatus::validate($data['status']);
-                
-                $stmt = $this->pdo->prepare("SELECT id FROM tasks WHERE id = :id");
+
+                $query = "SELECT id FROM tasks WHERE id = :id";
+                $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $data['id']]);
     
                 if ($stmt->fetch()) {
-                    
-                    $stmt = $this->pdo->prepare("UPDATE tasks 
-                                                 SET name = :name, 
-                                                     status = :status, 
-                                                     startDate = :startDate, 
-                                                     endDate = :endDate, 
-                                                     user = :user,
-                                                     userId = :userId
-                                                 WHERE id = :id");
+
+
+                    $query = "UPDATE tasks SET name = :name, status = :status, startDate = :startDate, endDate = :endDate, user = :user,userId = :userId
+                    WHERE id = :id";
+                    $stmt = $this->pdo->prepare($query);
     
                     $stmt->execute([
                         ':id' => $data['id'],
@@ -71,9 +87,9 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 }
             }
     
-            
-            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user, userId) 
-                                         VALUES (:name, :status, :startDate, :endDate, :user, :userId)");
+            $query = "INSERT INTO tasks (name, status, startDate, endDate, user, userId) 
+            VALUES (:name, :status, :startDate, :endDate, :user, :userId)";
+            $stmt = $this->pdo->prepare($query);
     
             $stmt->execute([
                 ':name' => $data['name'],
@@ -95,6 +111,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     public function getAll() {
 
         try {
+            
             $stmt = $this->pdo->query("SELECT id, name, status, 
                               DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
                               DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
@@ -136,8 +153,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 throw new InvalidArgumentException("ID no proporcionado");
             }
             
-            $sql = 'SELECT * FROM tasks WHERE id = ?';
-            $stmt = $this->pdo->prepare($sql);
+            $query = 'SELECT * FROM tasks WHERE id = ?';
+            $stmt = $this->pdo->prepare($query);
             $stmt->execute([$id]);
     
             return $stmt->fetch(PDO::FETCH_ASSOC); 

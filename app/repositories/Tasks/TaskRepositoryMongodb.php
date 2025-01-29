@@ -32,7 +32,7 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
     
     public static function getInstance(){
-        
+
         if(self::$_instance === null){
             self::$_instance = new self();
         }
@@ -44,17 +44,26 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
         try {
 
+            if (!empty($data['startDate']) && !empty($data['endDate'])) {
+                $startDate = strtotime($data['startDate']);
+                $endDate = strtotime($data['endDate']);
+    
+                if ($startDate > $endDate) {
+                    throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+                }
+            }
 
             if (isset($data['id']) && !empty($data['id'])) {
                 $filter = ['_id' => new \MongoDB\BSON\ObjectId($data['id'])];
     
                 if (isset($data['id'])) {
                     unset($data['id']); 
-                }
+                } 
     
                 if (!empty($data)) {
 
                     TaskStatus::validate($data['status']);
+
 
                     $result = $this->collection->updateOne($filter, ['$set' => $data]);
 
