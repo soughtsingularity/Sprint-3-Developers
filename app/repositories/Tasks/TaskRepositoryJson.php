@@ -159,6 +159,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     }
     
     public function getById($id) {
+
         try {
             $jsonData = file_get_contents($this->filePath);
             if ($jsonData === false) {
@@ -166,6 +167,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             }
     
             $data = json_decode($jsonData, true);
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
@@ -173,12 +175,12 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             foreach ($data as $task) {
                 if (isset($task['id']) && $task['id'] == $id) {
                     return [
-                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
-                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
-                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
-                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
-                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                        'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
+                        'status' => isset($task['status']) ? $task['status'] : 'Desconocido',
+                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
+                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
+                        'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
+                        'id' => isset($task['id']) ? $task['id'] : 'Desconocido'
                     ];
                 }
             }
@@ -221,12 +223,12 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                     $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
     
                     $matchingTasks[] = [
-                        'id' => $item['id'] ?? 'undefined',
-                        'name' => $item['name'] ?? 'undefined',
+                        'id' => $item['id'] ?? 'Desconocido',
+                        'name' => $item['name'] ?? 'Desconocido',
                         'status' => $item['status'],
-                        'startDate' => $item['startDate'] ?? 'undefined',
-                        'endDate' => $item['endDate'] ?? 'undefined',
-                        'user' => $item['user'] ?? 'undefined'
+                        'startDate' => $item['startDate'] ?? 'Desconocido',
+                        'endDate' => $item['endDate'] ?? 'Desconocido',
+                        'user' => $item['user'] ?? 'Desconocido'
                     ];
                 }
             }
