@@ -160,8 +160,8 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => (string) $task['_id'],
-                    'name' => $task['name'],
+                    'id' => (string) $task['_id'] ?? 'Desconocido',
+                    'name' => $task['name'] ?? 'Desconocido',
                     'status' => $statusMap[$task['status']] ?? 'Desconocido',
                     'startDate' => $task['startDate'] ?? 'Desconocido',
                     'endDate' => $task['endDate'] ?? 'Desconocido',

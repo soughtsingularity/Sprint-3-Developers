@@ -11,6 +11,7 @@ class TaskController extends Controller {
     }
 
     public function listAction() {
+        
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskName']) && !empty(trim($_POST['taskName']))) {
                 $taskName = trim($_POST['taskName']);
@@ -19,6 +20,7 @@ class TaskController extends Controller {
     
                 if ($tasks) {
                     $this->view->tasks = $tasks;
+
                 } else {
 
                     throw new Exception("No se encontraron tareas con el nombre: " . htmlspecialchars($taskName));
@@ -27,6 +29,7 @@ class TaskController extends Controller {
                 $this->view->tasks = $this->taskRepository->getAll();
             }
         } catch (Exception $e) {
+
             error_log("Error loading tasks list: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
     
             if ($e->getMessage() === "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName)) {
@@ -50,8 +53,9 @@ class TaskController extends Controller {
             if($userRepository){
                 
                 $this->view->users = $userRepository->getAll();
+
             }else{
-                throw new Exception("Error obteniendo usuarios del repositorio");
+                throw new Exception("Error inicializando el repositorio");
             }
 
         }catch(Exception $e){
@@ -63,9 +67,19 @@ class TaskController extends Controller {
     }
 
     public function editAction() {
+
         try {
+
             $userRepository = UserRepositoryFactory::create();
-            $this->view->users = $userRepository->getAll();
+
+            if($userRepository){
+
+                $this->view->users = $userRepository->getAll();
+
+            }else{
+
+                throw new Exception("Error inicializando el repositorio");
+            }
             
             $id = $_GET['id'] ?? null;
     
@@ -73,7 +87,6 @@ class TaskController extends Controller {
                 throw new \Exception("ID de tarea no proporcionado.");
             }
     
-            
             if (preg_match('/^[0-9a-fA-F]{24}$/', $id)) {
                 $taskId = new \MongoDB\BSON\ObjectId($id);
             } elseif (is_numeric($id)) {
@@ -83,13 +96,14 @@ class TaskController extends Controller {
             }
     
             $taskRepository = TaskRepositoryFactory::create();
-            $task = $taskRepository->getById($taskId);
-    
-            if (!$task) {
-                throw new \Exception("No se encontró la tarea.");
-            }
-    
-            $this->view->task = $task;
+
+            if($taskRepository){
+
+                $this->view->task = $taskRepository->getById($taskId);
+
+            }else{
+                throw new Exception("Error al inicializar el repositorio");
+            }   
     
         } catch (\Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
@@ -102,6 +116,7 @@ class TaskController extends Controller {
 
     public function saveAction() {
         try {
+
             $taskData = [
                 'id' => isset($_POST['id']) ? 
                     (preg_match('/^[0-9a-fA-F]{24}$/', $_POST['id']) ? new \MongoDB\BSON\ObjectId($_POST['id']) : $_POST['id']) 
@@ -115,7 +130,15 @@ class TaskController extends Controller {
             ];
             
             $taskRepository = TaskRepositoryFactory::create();
-            $result = $taskRepository->save($taskData);
+
+            if($taskRepository){
+
+                $result = $taskRepository->save($taskData);
+
+            }else{
+                throw new Exception("Error al inicializar el repositorio");
+            }
+            
     
             $isUpdate = isset($taskData['id']) && !empty($taskData['id']);
     
@@ -156,6 +179,7 @@ class TaskController extends Controller {
     public function deleteAction() {
 
         try {
+
             $id = $_GET['id'] ?? null;
     
             if (!$id) {

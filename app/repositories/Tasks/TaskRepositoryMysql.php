@@ -168,7 +168,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => $task['id'] ?? 'undefined',
+                    'id' => $task['id'] ?? 'Desconocido',
                     'name' => $task['name'] ?? 'Desconocido',
                     'status' => isset($task['status']) ? ($statusMap[$task['status']] ?? 'Desconocido') : 'Desconocido',
                     'startDate' => $task['startDate'] ?? 'Desconocido',
