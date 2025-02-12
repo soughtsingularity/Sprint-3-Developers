@@ -126,7 +126,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 throw new Exception("No se pudo leer el archivo: " . $this->filePath);
             }
     
-            $data = json_decode($jsonData, true);
+            $tasks = json_decode($jsonData, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
@@ -137,24 +137,20 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 'completed' => 'Completada'
             ];
     
-            $tasks = array_map(function($task) use ($statusMap) {
+            return array_map(function($task) use ($statusMap) {
                 return [
-                    'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
-                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
-                        ? $statusMap[$task['status']] 
-                        : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
-                    'user' => isset($task['user']) ? $task['user'] : 'undefined',
-                    'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
+                    'name' => $task['name'] ?? 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
+                    'startDate' => $task['startDate'] ?? 'Desconocido',
+                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'user' => $task['user'] ?? 'Desconocido',
                 ];
-            }, $data);
-    
-            return $tasks;
-    
+            }, $tasks);
+
         } catch (Exception $e) {
-            error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+            error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return [];
         }
     }
     
@@ -207,7 +203,16 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     
             $tasks = json_decode($jsonData, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg() . " en " . __FILE__ . " línea " . __LINE__);
+            }
+    
+            $tasks = array_filter($tasks, function($task) use ($name) {
+                return isset($task['name']) && $task['name'] == $name;
+            });
+    
+            if (empty($tasks)) {
+                error_log("Error: No se encontraron tareas con el nombre: {$name}");
+                return null;
             }
     
             $statusMap = [
@@ -216,35 +221,22 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                 'completed' => 'Completada'
             ];
     
-            $matchingTasks = [];
-
-            foreach ($tasks as $item) {
-                if (isset($item['name']) && $item['name'] == $name) {
-                    $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
-    
-                    $matchingTasks[] = [
-                        'id' => $item['id'] ?? 'Desconocido',
-                        'name' => $item['name'] ?? 'Desconocido',
-                        'status' => $item['status'],
-                        'startDate' => $item['startDate'] ?? 'Desconocido',
-                        'endDate' => $item['endDate'] ?? 'Desconocido',
-                        'user' => $item['user'] ?? 'Desconocido'
-                    ];
-                }
-            }
-    
-            if (empty($matchingTasks)) {
-                error_log("Error: No se encontraron tareas con el nombre: " . $name);
-                return [];
-            }
-    
-            return $matchingTasks;
-    
+            return array_map(function($task) use ($statusMap) {
+                return [
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
+                    'name' => $task['name'] ?? 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
+                    'startDate' => $task['startDate'] ?? 'Desconocido',
+                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'user' => $task['user'] ?? 'Desconocido',
+                ];
+            }, $tasks);
         } catch (Exception $e) {
-            error_log("Error al obtener tareas por nombre: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return [];
+            error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return null;
         }
     }
+    
 
     public function delete($id) {
         try {

@@ -1,13 +1,14 @@
 <?php
 
-class TaskRepositoryMysql implements TaskRepositoryInterface{
+class TaskRepositoryMysql implements TaskRepositoryInterface
+{
 
     private static $_instance = null;
     private $pdo;
 
     public function __construct(){
     
-        $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
+        $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
     
         $host = $settings['mysql']['host'];
         $dbname = $settings['mysql']['dbname'];
@@ -23,18 +24,19 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
         }
     }
 
-    public static function getInstance(){
+    public static function getInstance()
+    {
 
-        if(self::$_instance === null){
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
 
         return self::$_instance;
     }
 
-    public function save(array $data) {
+    public function save(array $data)
+    {
         try {
-            // Validar fechas
             if (!empty($data['startDate']) && !empty($data['endDate'])) {
                 $startDate = strtotime($data['startDate']);
                 $endDate = strtotime($data['endDate']);
@@ -44,10 +46,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 }
             }
     
-            // Validar estado de la tarea
             TaskStatus::validate($data['status']);
     
-            // Si la tarea existe, actualizarla
             if (!empty($data['id'])) {
                 $stmt = $this->pdo->prepare("UPDATE tasks 
                                              SET name = :name, 
@@ -70,7 +70,6 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                 return $stmt->rowCount() > 0 ? $data['id'] : false;
             }
     
-            // Si la tarea no existe, insertarla
             $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user, userId) 
                                          VALUES (:name, :status, :startDate, :endDate, :user, :userId)");
             $stmt->execute([
@@ -90,7 +89,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
         }
     }
     
-    public function getAll() {
+    public function getAll() 
+    {
         try {
             $stmt = $this->pdo->prepare("SELECT id, name, status, 
                                          DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
@@ -108,22 +108,22 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => $task['id'],
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
                     'name' => $task['name'] ?? 'Desconocido',
-                    'status' => $statusMap[$task['status']] ?? 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
                     'startDate' => $task['startDate'] ?? 'Desconocido',
                     'endDate' => $task['endDate'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido',
                 ];
             }, $tasks);
-    
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return [];
+            return null;
         }
     }
     
-    public function getById($id) {
+    public function getById($id) 
+    {
         try {
             if (empty($id)) {
                 throw new InvalidArgumentException("ID no proporcionado");
@@ -131,6 +131,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             $stmt = $this->pdo->prepare("SELECT * FROM tasks WHERE id = :id");
             $stmt->execute([':id' => $id]);
+
             return $stmt->fetch(PDO::FETCH_ASSOC);
     
         } catch (PDOException $e) {
@@ -139,7 +140,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
         }
     }
     
-    public function getByName($name) {
+    public function getByName($name) 
+    {
         try {
             if (empty($name)) {
                 throw new InvalidArgumentException("Nombre no proporcionado");
@@ -153,10 +155,10 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                                          WHERE name = :name");
     
             $stmt->execute([':name' => $name]);
-            $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-            if (!$tasks) {
-                error_log("Error: No se encontraron tareas con el nombre: {$name}");
+            if (!$data) {
+                error_log("Error: No se encontraron tareas con el nombre: {$name}" . " en " . __FILE__ . " línea " . __LINE__);
                 return [];
             }
     
@@ -168,23 +170,23 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => $task['id'] ?? 'Desconocido',
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
                     'name' => $task['name'] ?? 'Desconocido',
-                    'status' => isset($task['status']) ? ($statusMap[$task['status']] ?? 'Desconocido') : 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
                     'startDate' => $task['startDate'] ?? 'Desconocido',
                     'endDate' => $task['endDate'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido',
                 ];
-            }, $tasks);
-    
-        } catch (PDOException $e) {
-            error_log("Error al obtener tareas por nombre: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            }, $data);
+        } catch (Exception $e) {
+            error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }
     
     
-    public function delete($id) {
+    public function delete($id)
+    {
         try {
             $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
             $stmt->execute([':id' => $id]);
@@ -195,6 +197,4 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             return false;
         }
     }
-    
-    
 }

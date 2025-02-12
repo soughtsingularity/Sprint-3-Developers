@@ -94,7 +94,7 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
         try {
 
             $cursor = $this->collection->find();
-            $data = iterator_to_array($cursor);
+            $tasks = iterator_to_array($cursor);
     
             $statusMap = [
                 'pending' => 'Pendiente',
@@ -102,24 +102,19 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                 'completed' => 'Completada'
             ];
     
-            $tasks = array_map(function($task) use ($statusMap) {
+            return array_map(function($task) use ($statusMap) {
                 return [
-                    'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
-                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
-                        ? $statusMap[$task['status']] 
-                        : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
-                    'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
-                    'id' => isset($task['_id']) ? $task['_id'] : 'Desconocido'
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
+                    'name' => $task['name'] ?? 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
+                    'startDate' => $task['startDate'] ?? 'Desconocido',
+                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'user' => $task['user'] ?? 'Desconocido',
                 ];
-            }, $data);
-    
-            return $tasks;
-
-        } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
+            }, $tasks);
+        } catch (Exception $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return null;
+            return [];
         }
     }
 
@@ -149,7 +144,7 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
             if (empty($tasks)) {
                 error_log("Error: No se encontraron tareas con el nombre: {$name}");
-                return [];
+                return null;
             }
     
             $statusMap = [
@@ -160,17 +155,17 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => (string) $task['_id'] ?? 'Desconocido',
+                    'id' => isset($task['_id']) ? (string) $task['_id'] : (isset($task['id']) ? (string) $task['id'] : 'Desconocido'),
                     'name' => $task['name'] ?? 'Desconocido',
-                    'status' => $statusMap[$task['status']] ?? 'Desconocido',
+                    'status' => isset($task['status']) && isset($statusMap[$task['status']]) ? $statusMap[$task['status']] : 'Desconocido',
                     'startDate' => $task['startDate'] ?? 'Desconocido',
                     'endDate' => $task['endDate'] ?? 'Desconocido',
-                    'user' => $task['user'] ?? 'Desconocido'
+                    'user' => $task['user'] ?? 'Desconocido',
                 ];
             }, $tasks);
-    
-        } catch (\MongoDB\Exception\Exception $e) {
-            error_log("Error al obtener tareas por nombre: " . $e->getMessage());
+
+        } catch (Exception $e) {
+            error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return null;
         }
     }

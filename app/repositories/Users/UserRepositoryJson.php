@@ -4,7 +4,7 @@ class UserRepositoryJson implements UserRepositoryInterface {
     private static $_instance = null;
     private $filePath;
 
-    public function __construct(){
+    private function __construct(){
 
         $this->filePath = ROOT_PATH . "/app/data/Users.json";
     
@@ -30,7 +30,6 @@ class UserRepositoryJson implements UserRepositoryInterface {
     }
 
     private function readData() {
-
         try {
             $data = file_get_contents($this->filePath);
             if ($data === false) {
@@ -55,10 +54,10 @@ class UserRepositoryJson implements UserRepositoryInterface {
             if (file_put_contents($this->filePath, json_encode($data, JSON_PRETTY_PRINT)) === false) {
                 throw new Exception("No se pudo escribir en el archivo JSON de usuarios: " . $this->filePath);
             }
-            return true; // Indica éxito en la escritura
+            return true; 
         } catch (Exception $e) {
             error_log("Error escribiendo en el archivo JSON de usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return false; // Retorna false si ocurre un error
+            return false; 
         }
     }
     
@@ -69,9 +68,7 @@ class UserRepositoryJson implements UserRepositoryInterface {
             if ($dataSet === null) {
                 throw new Exception("No se pudieron cargar los datos para guardar el usuario.");
             }
-    
-            error_log("Contenido actual del JSON: " . print_r($dataSet, true));
-    
+
             foreach ($dataSet as $user) {
                 if ($user['email'] === $email) {
                     $_SESSION['newUser'] = $email; 
@@ -88,41 +85,43 @@ class UserRepositoryJson implements UserRepositoryInterface {
             $dataSet[] = $newUser;
     
             if ($this->writeData($dataSet)) {
+
                 $_SESSION['newUser'] = $email; 
                 return true; 
             }
     
             throw new Exception("Error al guardar el nuevo usuario.");
+
         } catch (Exception $e) {
             error_log("Error al guardar usuario en JSON: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return false; // Retorna false en caso de error
+            return false; 
         }
     }
     
-public function getAll() {
-    try {
-        $jsonData = file_get_contents($this->filePath);
-        if ($jsonData === false) {
-            throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+    public function getAll() {
+        try {
+            $jsonData = file_get_contents($this->filePath);
+            if ($jsonData === false) {
+                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+            }
+
+            $data = json_decode($jsonData, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+            }
+
+            return array_map(function($user) {
+                return [
+                    'id' => $user['id'] ?? 'Desconocido',
+                    'email' => $user['email'] ?? 'Desconocido'
+                ];
+            }, $data);
+            
+
+        } catch (Exception $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return null;
         }
-
-        $data = json_decode($jsonData, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
-        }
-
-        return array_map(function($user) {
-            return [
-                'id' => isset($user['id']) ? $user['id'] : 'undefined',  
-                'email' => isset($user['email']) ? $user['email'] : 'undefined'
-            ];
-        }, $data);
-
-    } catch (Exception $e) {
-        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-        return [];
     }
-}
-
 }

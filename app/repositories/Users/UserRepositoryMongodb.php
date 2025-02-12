@@ -7,9 +7,9 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
     private static $_instance = null;
     protected $collection;
 
-    public function __construct(){
+    private function __construct(){
 
-        $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
+        $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
         
         try {
             $client = new Client($settings['mongodb']['uri']);
@@ -67,10 +67,11 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
             $users = iterator_to_array($cursor);
     
             foreach ($users as &$user) {
-                $user['id'] = (string)$user['_id']; 
+                $user['id'] = isset($user['_id']) ? (string)$user['_id'] : 'Desconocido';
                 unset($user['_id']);  
+                $user['email'] = isset($user['email']) ? $user['email'] : 'Desconocido';
             }
-    
+            
             return $users;
 
         } catch (\MongoDB\Exception\Exception $e) {

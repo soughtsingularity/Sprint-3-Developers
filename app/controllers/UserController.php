@@ -14,7 +14,7 @@ class UserController extends Controller {
 
         try{
 
-            $email = $this->_getParam('email');
+            $email = $_POST['email'] ?? null;
     
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $newUser = $this->userRepository->save($email);
@@ -33,6 +33,7 @@ class UserController extends Controller {
             error_log("Error al crear el usuario " . $e->getMessage());
             $_SESSION['error_message'] = "Error al crear el usuario";
             header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+            exit();
 
         }
     }

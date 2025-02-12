@@ -7,7 +7,7 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
 
     private function __construct() {
 
-        $settings = parse_ini_file(__DIR__ . '/../../../config/settings.ini', true);
+        $settings = parse_ini_file(ROOT_PATH . '/config/settings.ini', true);
     
         $host = $settings['mysql']['host'];
         $dbname = $settings['mysql']['dbname'];
@@ -56,20 +56,27 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
             throw new Exception("No se pudo insertar el usuario.");
 
         } catch (PDOException $e) {
-            error_log("Error al guardar usuario: " . $e->getMessage());
+            error_log("Error al guardar usuario: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
         }
     }
 
-public function getAll() {
-    try {
-        $stmt = $this->pdo->query("SELECT id, email FROM users");  
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (\PDOException | \Exception $e) {
-        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-        return null;
+    public function getAll() {
+        try {
+            $stmt = $this->pdo->query("SELECT id, email FROM users");  
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return array_map(function($user) {
+                return [
+                    'id' => isset($user['id']) ? $user['id'] : 'Desconocido',
+                    'email' => isset($user['email']) ? $user['email'] : 'Desconocido'
+                ];
+            }, $users);        
+        } catch (\PDOException | \Exception $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return null;
+        }
     }
-}
 
     
 }
