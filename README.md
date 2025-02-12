@@ -82,6 +82,8 @@ CREATE TABLE users (
 
 Donde admin es la base de datos utilizada para la autenticación de usuarios en MongoDB. Si tienes configurada otra base de datos principal para la autenticación de usuarios, asegúrate de cambiar admin por el nombre adecuado de tu base de datos de autenticación.
 
+6. Asegurate de darle permisos de escritura a los archivos app/data Users.json y Tasks.json y a logs/app_errors.log
+
 
 ## ⏩ Ejecución
 
