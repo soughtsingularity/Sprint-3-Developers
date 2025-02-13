@@ -56,20 +56,22 @@ class UserRepositoryMySQL implements UserRepositoryInterface {
             throw new Exception("No se pudo insertar el usuario.");
 
         } catch (PDOException $e) {
-            error_log("Error al guardar usuario: " . $e->getMessage());
+            error_log("Error al guardar usuario en MYsql: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             return false;
         }
     }
 
-public function getAll() {
-    try {
-        $stmt = $this->pdo->query("SELECT id, email FROM users");  
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (\PDOException | \Exception $e) {
-        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-        return null;
+    public function getAll() {
+        try {
+            $stmt = $this->pdo->query("SELECT id, email FROM users");  
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (\PDOException | \Exception $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return null;
+        }
     }
-}
 
     
 }

@@ -33,7 +33,7 @@
             <div class="bg-gray-700 rounded-md p-4 shadow-sm">
               <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-semibold text-gray-300">
-                  <?= htmlspecialchars($task['name'] ?? 'Sin nombre') ?>
+                  <?= htmlspecialchars($task['name'] ?? 'Desconocido') ?>
                 </h2>
                 <span class="px-3 py-1 text-sm font-medium rounded-md 
                   <?php 
@@ -52,14 +52,14 @@
               <div class="flex justify-between mb-2">
                 <div>
                   <p class="text-gray-400 text-sm">Fecha de inicio:</p>
-                  <span class="text-gray-300"><?= htmlspecialchars($task['startDate'] ?? 'N/A') ?></span>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['start_date'] ?? 'Desconocido') ?></span>
                 </div>
                 <div>
                   <p class="text-gray-400 text-sm">Fecha de entrega:</p>
-                  <span class="text-gray-300"><?= htmlspecialchars($task['endDate'] ?? 'N/A') ?></span>
+                  <span class="text-gray-300"><?= htmlspecialchars($task['end_date'] ?? 'Desconocido') ?></span>
                 </div>
                 <h2 class="text-lg font-semibold text-gray-300">
-                  <?= htmlspecialchars($task['user'] ?? 'Sin asignar') ?>
+                  <?= htmlspecialchars($task['user'] ?? 'Desconocido') ?>
                 </h2>
               </div>
 

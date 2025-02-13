@@ -3,10 +3,13 @@
 class TaskController extends Controller {
 
     private $taskRepository;
+    private $userRepository;
 
     public function __construct(){
   
         $this->taskRepository = TaskRepositoryFactory::create();
+        $this->userRepository = UserRepositoryFactory::create(); 
+
 
     }
 
@@ -48,11 +51,9 @@ class TaskController extends Controller {
 
         try{
 
-            $userRepository = UserRepositoryFactory::create();
-
-            if($userRepository){
+            if($this->userRepository){
                 
-                $this->view->users = $userRepository->getAll();
+                $this->view->users = $this->userRepository->getAll();
 
             }else{
                 throw new Exception("Error inicializando el repositorio");
@@ -70,11 +71,10 @@ class TaskController extends Controller {
 
         try {
 
-            $userRepository = UserRepositoryFactory::create();
 
-            if($userRepository){
+            if($this->userRepository){
 
-                $this->view->users = $userRepository->getAll();
+                $this->view->users = $this->userRepository->getAll();
 
             }else{
 
@@ -95,11 +95,9 @@ class TaskController extends Controller {
                 throw new \Exception("ID de tarea no válido.");
             }
     
-            $taskRepository = TaskRepositoryFactory::create();
+            if($this->taskRepository){
 
-            if($taskRepository){
-
-                $this->view->task = $taskRepository->getById($taskId);
+                $this->view->task = $this->taskRepository->getById($taskId);
 
             }else{
                 throw new Exception("Error al inicializar el repositorio");
@@ -123,17 +121,15 @@ class TaskController extends Controller {
                     : null,
                 'name' => $_POST['name'] ?? null,
                 'status' => $_POST['status'] ?? null,
-                'startDate' => $_POST['startDate'] ?? null,
-                'endDate' => $_POST['endDate'] ?? null,
+                'start_date' => $_POST['start_date'] ?? null,
+                'end_date' => $_POST['end_date'] ?? null,
                 'user' => $_POST['user'] ?? null,
-                'userId' => $_POST['userId'] ?? null,
+                'user_id' => $_POST['user_id'] ?? null,
             ];
             
-            $taskRepository = TaskRepositoryFactory::create();
+            if($this->taskRepository){
 
-            if($taskRepository){
-
-                $result = $taskRepository->save($taskData);
+                $result = $this->taskRepository->save($taskData);
 
             }else{
                 throw new Exception("Error al inicializar el repositorio");
@@ -194,8 +190,7 @@ class TaskController extends Controller {
                 throw new \Exception("ID de tarea no válido.");
             }
     
-            $taskRepository = TaskRepositoryFactory::create();
-            $result = $taskRepository->delete($taskId);
+            $result = $this->taskRepository->delete($taskId);
     
             if ($result) {
                 $_SESSION['success_message'] = "Tarea eliminada correctamente.";

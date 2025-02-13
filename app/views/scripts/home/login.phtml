@@ -35,7 +35,7 @@
           name="email" 
           required 
           class="mt-2 w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-          placeholder="Enter your email" />
+          placeholder="Introduce el email" />
       </div>
       <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-md transition duration-300">
         Enter
@@ -45,7 +45,6 @@
   </div>
   
   <script>
-    // Ocultar mensaje de éxito y redirigir
     setTimeout(() => {
       const successMessage = document.getElementById('success-message');
       if (successMessage) {
@@ -54,7 +53,6 @@
       }
     }, 2000);
 
-    // Ocultar mensaje de error de inicialización y redirigir a Home
     setTimeout(() => {
       const initErrorMessage = document.getElementById('init-error-message');
       if (initErrorMessage) {

@@ -34,7 +34,9 @@ class UserRepositoryMongodb implements UserRepositoryInterface{
 
         try {
 
-            $email = strtolower(trim($email));
+            if (empty($email)) {
+                throw new InvalidArgumentException("Email no proporcionado");
+            }
     
             $existingUser = $this->collection->findOne(['email' => $email]);
     

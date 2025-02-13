@@ -44,21 +44,17 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
         try {
 
-            if (!empty($data['startDate']) && !empty($data['endDate'])) {
-                $startDate = strtotime($data['startDate']);
-                $endDate = strtotime($data['endDate']);
+            if (!empty($data['start_date']) && !empty($data['end_date'])) {
+                $start_date = strtotime($data['start_date']);
+                $end_date = strtotime($data['end_date']);
     
-                if ($startDate > $endDate) {
+                if ($start_date > $end_date) {
                     throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
                 }
             }
 
             if (isset($data['id']) && !empty($data['id'])) {
                 $filter = ['_id' => new \MongoDB\BSON\ObjectId($data['id'])];
-    
-                if (isset($data['id'])) {
-                    unset($data['id']); 
-                } 
     
                 if (!empty($data)) {
 
@@ -93,8 +89,13 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
         try {
 
-            $cursor = $this->collection->find();
-            $data = iterator_to_array($cursor);
+            $data = $this->collection->find();
+            $tasks = iterator_to_array($data);
+
+            if (!$tasks) {
+                error_log("Error: No se encontraron tareas con el nombre: {$name}");
+                return null;
+            }
     
             $statusMap = [
                 'pending' => 'Pendiente',
@@ -102,20 +103,18 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                 'completed' => 'Completada'
             ];
     
-            $tasks = array_map(function($task) use ($statusMap) {
+            return array_map(function($task) use ($statusMap) {
                 return [
+                    'id' => isset($task['_id']) ? $task['_id'] : 'Desconocido',
                     'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
                     'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
                         ? $statusMap[$task['status']] 
                         : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
-                    'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
-                    'id' => isset($task['_id']) ? $task['_id'] : 'Desconocido'
+                    'start_date' => isset($task['start_date']) ? $task['start_date'] : 'Desconocido',
+                    'end_date' => isset($task['end_date']) ? $task['end_date'] : 'Desconocido',
+                    'user' => isset($task['user']) ? $task['user'] : 'Desconocido'
                 ];
-            }, $data);
-    
-            return $tasks;
+            }, $tasks);
 
         } catch (\MongoDB\Driver\Exception\InvalidArgumentException | \MongoDB\Exception\Exception $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
@@ -143,13 +142,18 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
     public function getByName($name) {
         try {
+
+            if (empty($name)) {
+                throw new InvalidArgumentException("Nombre no proporcionado");
+            }
+
             $cursor = $this->collection->find(['name' => $name]);
     
             $tasks = iterator_to_array($cursor);
     
-            if (empty($tasks)) {
+            if (!$tasks) {
                 error_log("Error: No se encontraron tareas con el nombre: {$name}");
-                return [];
+                return null;
             }
     
             $statusMap = [
@@ -163,8 +167,8 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                     'id' => (string) $task['_id'] ?? 'Desconocido',
                     'name' => $task['name'] ?? 'Desconocido',
                     'status' => $statusMap[$task['status']] ?? 'Desconocido',
-                    'startDate' => $task['startDate'] ?? 'Desconocido',
-                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'start_date' => $task['start_date'] ?? 'Desconocido',
+                    'end_date' => $task['end_date'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido'
                 ];
             }, $tasks);
