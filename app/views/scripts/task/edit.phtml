@@ -20,8 +20,8 @@
     </div>
 
     <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
-      <!-- Campo oculto para el ID si existe -->
-      <input type="hidden" name="id" 
+
+    <input type="hidden" name="id" 
         value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : (isset($this->task['_id']) ? htmlspecialchars((string)$this->task['_id']) : ''); ?>">
 
       <div class="mb-4">
@@ -51,7 +51,7 @@
         <label class="block text-gray-400">Fecha de inicio</label>
         <input 
           type="date" 
-          name="startDate" 
+          name="start_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -60,14 +60,14 @@
         <label class="block text-gray-400">Fecha límite</label>
         <input 
           type="date" 
-          name="endDate" 
+          name="end_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
 
       <div class="mb-4">
         <label class="block text-gray-400">Asignado a</label>
-        <select id="userSelect" name="userId" 
+        <select id="userSelect" name="user_id" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
           <option value="">Seleccione un usuario</option>
           <?php foreach ($this->users as $user): ?>
@@ -76,7 +76,6 @@
             </option>
           <?php endforeach; ?>
         </select>
-        <!-- Campo oculto para capturar el email -->
         <input type="hidden" id="user" name="user" value="">
       </div>
 

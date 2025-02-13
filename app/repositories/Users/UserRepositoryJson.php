@@ -64,6 +64,11 @@ class UserRepositoryJson implements UserRepositoryInterface {
     
     public function save($email) {
         try {
+
+            if (empty($email)) {
+                throw new InvalidArgumentException("Email no proporcionado");
+            }
+
             $dataSet = $this->readData();
     
             if ($dataSet === null) {
@@ -91,6 +96,10 @@ class UserRepositoryJson implements UserRepositoryInterface {
                 $_SESSION['newUser'] = $email; 
                 return true; 
             }
+
+            if (!$this->writeData($dataSet)) {
+                throw new Exception("Error al guardar usuario en JSON.");
+            }
     
             throw new Exception("Error al guardar el nuevo usuario.");
         } catch (Exception $e) {
@@ -99,30 +108,30 @@ class UserRepositoryJson implements UserRepositoryInterface {
         }
     }
     
-public function getAll() {
-    try {
-        $jsonData = file_get_contents($this->filePath);
-        if ($jsonData === false) {
-            throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+    public function getAll() {
+        try {
+            $jsonData = file_get_contents($this->filePath);
+            if ($jsonData === false) {
+                throw new Exception("No se pudo leer el archivo: " . $this->filePath);
+            }
+
+            $data = json_decode($jsonData, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+            }
+
+            return array_map(function($user) {
+                return [
+                    'id' => $user['id'] ?? null,  
+                    'email' => $user['email'] ?? null
+                ];
+            }, $data);
+
+        } catch (Exception $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
+            return [];
         }
-
-        $data = json_decode($jsonData, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
-        }
-
-        return array_map(function($user) {
-            return [
-                'id' => isset($user['id']) ? $user['id'] : 'undefined',  
-                'email' => isset($user['email']) ? $user['email'] : 'undefined'
-            ];
-        }, $data);
-
-    } catch (Exception $e) {
-        error_log("Error al obtener usuarios: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-        return [];
     }
-}
 
 }

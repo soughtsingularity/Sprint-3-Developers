@@ -34,53 +34,50 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
 
     public function save(array $data) {
         try {
-            // Validar fechas
-            if (!empty($data['startDate']) && !empty($data['endDate'])) {
-                $startDate = strtotime($data['startDate']);
-                $endDate = strtotime($data['endDate']);
+            if (!empty($data['start_date']) && !empty($data['end_date'])) {
+                $startDate = strtotime($data['start_date']);
+                $endDate = strtotime($data['end_date']);
     
                 if ($startDate > $endDate) {
                     throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
                 }
             }
     
-            // Validar estado de la tarea
             TaskStatus::validate($data['status']);
     
-            // Si la tarea existe, actualizarla
             if (!empty($data['id'])) {
                 $stmt = $this->pdo->prepare("UPDATE tasks 
                                              SET name = :name, 
                                                  status = :status, 
-                                                 startDate = :startDate, 
-                                                 endDate = :endDate, 
+                                                 start_date = :start_date, 
+                                                 end_date = :end_date, 
                                                  user = :user, 
-                                                 userId = :userId
+                                                 user_id = :user_id
                                              WHERE id = :id");
                 $stmt->execute([
                     ':id' => $data['id'],
                     ':name' => $data['name'],
                     ':status' => $data['status'],
-                    ':startDate' => $data['startDate'],
-                    ':endDate' => $data['endDate'],
+                    ':start_date' => $data['start_date'],
+                    ':end_date' => $data['end_date'],
                     ':user' => $data['user'],
-                    ':userId' => $data['userId'],
+                    ':user_id' => $data['user_id'],
                 ]);
     
                 return $stmt->rowCount() > 0 ? $data['id'] : false;
             }
     
-            // Si la tarea no existe, insertarla
-            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, startDate, endDate, user, userId) 
-                                         VALUES (:name, :status, :startDate, :endDate, :user, :userId)");
+            $stmt = $this->pdo->prepare("INSERT INTO tasks (name, status, start_date, end_date, user, user_id) 
+                                         VALUES (:name, :status, :start_date, :end_date, :user, :user_id)");
             $stmt->execute([
                 ':name' => $data['name'],
                 ':status' => $data['status'],
-                ':startDate' => $data['startDate'],
-                ':endDate' => $data['endDate'],
+                ':start_date' => $data['start_date'],
+                ':end_date' => $data['end_date'],
                 ':user' => $data['user'],
-                ':userId' => $data['userId'],
+                ':user_id' => $data['user_id'],
             ]);
+
     
             return $this->pdo->lastInsertId();
     
@@ -92,9 +89,10 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
     public function getAll() {
         try {
+
             $stmt = $this->pdo->prepare("SELECT id, name, status, 
-                                         DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
-                                         DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
+                                         DATE_FORMAT(start_date, '%m/%d/%Y') AS start_date, 
+                                         DATE_FORMAT(end_date, '%m/%d/%Y') AS end_date, 
                                          user 
                                          FROM tasks");
             $stmt->execute();
@@ -111,15 +109,16 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                     'id' => $task['id'],
                     'name' => $task['name'] ?? 'Desconocido',
                     'status' => $statusMap[$task['status']] ?? 'Desconocido',
-                    'startDate' => $task['startDate'] ?? 'Desconocido',
-                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'start_date' => $task['start_date'] ?? 'Desconocido',
+                    'end_date' => $task['end_date'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido',
+                    
                 ];
             }, $tasks);
     
         } catch (PDOException $e) {
             error_log("Error al obtener tareas: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-            return [];
+            return null;
         }
     }
     
@@ -131,6 +130,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             $stmt = $this->pdo->prepare("SELECT * FROM tasks WHERE id = :id");
             $stmt->execute([':id' => $id]);
+
             return $stmt->fetch(PDO::FETCH_ASSOC);
     
         } catch (PDOException $e) {
@@ -146,8 +146,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
             }
     
             $stmt = $this->pdo->prepare("SELECT id, name, status, 
-                                         DATE_FORMAT(startDate, '%m/%d/%Y') AS startDate, 
-                                         DATE_FORMAT(endDate, '%m/%d/%Y') AS endDate, 
+                                         DATE_FORMAT(start_date, '%m/%d/%Y') AS start_date, 
+                                         DATE_FORMAT(end_date, '%m/%d/%Y') AS end_date, 
                                          user 
                                          FROM tasks 
                                          WHERE name = :name");
@@ -157,7 +157,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
     
             if (!$tasks) {
                 error_log("Error: No se encontraron tareas con el nombre: {$name}");
-                return [];
+                
+                return null;
             }
     
             $statusMap = [
@@ -171,8 +172,8 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
                     'id' => $task['id'] ?? 'Desconocido',
                     'name' => $task['name'] ?? 'Desconocido',
                     'status' => isset($task['status']) ? ($statusMap[$task['status']] ?? 'Desconocido') : 'Desconocido',
-                    'startDate' => $task['startDate'] ?? 'Desconocido',
-                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'start_date' => $task['start_date'] ?? 'Desconocido',
+                    'end_date' => $task['end_date'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido',
                 ];
             }, $tasks);
@@ -188,6 +189,7 @@ class TaskRepositoryMysql implements TaskRepositoryInterface{
         try {
             $stmt = $this->pdo->prepare("DELETE FROM tasks WHERE id = :id");
             $stmt->execute([':id' => $id]);
+
             return $stmt->rowCount() > 0;
     
         } catch (PDOException $e) {

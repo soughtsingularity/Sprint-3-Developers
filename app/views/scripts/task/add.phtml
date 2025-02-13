@@ -46,7 +46,7 @@
         <label class="block text-gray-400">Fecha de inicio</label>
         <input 
           type="date" 
-          name="startDate" 
+          name="start_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -55,7 +55,7 @@
         <label class="block text-gray-400">Fecha límite</label>
         <input 
           type="date" 
-          name="endDate" 
+          name="end_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -64,7 +64,7 @@
         <label class="block text-gray-400">Asignado a</label>
         <select 
           id="userSelect" 
-          name="userId" 
+          name="user_id" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
           <option value="">Seleccione un usuario</option>
@@ -74,7 +74,6 @@
             </option>
           <?php endforeach; ?>
         </select>
-        <!-- Campo oculto para capturar el email -->
         <input type="hidden" id="user" name="user" value="">
       </div>
 

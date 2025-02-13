@@ -58,14 +58,17 @@ Persistencia en MOngoDB
 4. Crea las bases de datos `users` y `tasks` utilizando los siguientes comandos SQL:
 
 ```
-CREATE TABLE tasks (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    status ENUM('pending', 'in_progress', 'completed') NOT NULL,
-    startDate DATE NOT NULL,
-    endDate DATE NOT NULL,
-    user INT NOT NULL,  -- Relaciona la tarea con un usuario
-    CONSTRAINT fk_user FOREIGN KEY (user) REFERENCES users(id) ON DELETE CASCADE
+CREATE TABLE `tasks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` enum('pending','in_progress','completed') NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `user_id` int NOT NULL,
+  `user` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) 
+  ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE users (

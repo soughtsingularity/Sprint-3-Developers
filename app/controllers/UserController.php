@@ -14,25 +14,28 @@ class UserController extends Controller {
 
         try{
 
-            $email = $this->_getParam('email');
+            $email = $_POST['email'] ?? null;
+
+            if ($email === null || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error_message'] = $email === null ? "El email es requerido" : "El email no es válido";
+                header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+                exit();
+            }
+
+            $userSaved = $this->userRepository->save($email); 
+
+            $_SESSION['success_message'] = $userSaved
+                ? "Usuario {$email} creado correctamente."
+                : "Bienvenido {$email}";
     
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $newUser = $this->userRepository->save($email);
-            }
-        
-            if (isset($newUser) && $newUser) {
-                $_SESSION['success_message'] = "Usuario creado correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
-            } elseif ($newUser === false) {
-                $_SESSION['success_message'] = "Bienvenido {$email}.";
-                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
-            }
+            header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
             exit();
 
         }catch(Exception $e){
-            error_log("Error al crear el usuario " . $e->getMessage());
+            error_log("Error al crear el usuario " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "Error al crear el usuario";
             header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+            exit();
 
         }
     }
