@@ -35,7 +35,7 @@ Persistencia en MOngoDB
 - **Servidor web local** (como Apache o Nginx) para ejecutar la aplicación.
 - **MySQL** o **MariaDB** (si se utilizan bases de datos relacionales).
 - **Tailwind CSS** (para estilos en la interfaz).
-- **Composer** (opcional, para gestionar dependencias de PHP).
+- **Composer** (Para gestionar dependencias de PHP instaladas en el proyecto).
 
     illuminate/support 11.39.0 The Illuminate Support package.
     mongodb/mongodb    1.15.0  MongoDB driver library
@@ -58,6 +58,12 @@ Persistencia en MOngoDB
 4. Crea las bases de datos `users` y `tasks` utilizando los siguientes comandos SQL:
 
 ```
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -68,10 +74,6 @@ CREATE TABLE tasks (
     CONSTRAINT fk_user FOREIGN KEY (user) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL
-);
 ```
 
 5. Asegúrate de configurar la base de datos correctamente en el archivo `settings.ini` (ubicado en la carpeta `config`, en la raíz del proyecto). Debes proporcionar el valor `json`, `mysql` o `mongodb` en `user_repository` y `task_repository` para que la aplicación trabaje con el tipo de persistencia correspondiente.
@@ -83,6 +85,8 @@ CREATE TABLE users (
 Donde admin es la base de datos utilizada para la autenticación de usuarios en MongoDB. Si tienes configurada otra base de datos principal para la autenticación de usuarios, asegúrate de cambiar admin por el nombre adecuado de tu base de datos de autenticación.
 
 6. Asegurate de darle permisos de escritura a los archivos app/data Users.json y Tasks.json y a logs/app_errors.log
+
+7. Recuerda, en la raíz del proyecto, ejecutar el comando composer install para que los paquetes utilizados en el proyecto, y listandos en el archivo composer.json, sean instalados.
 
 
 ## ⏩ Ejecución
