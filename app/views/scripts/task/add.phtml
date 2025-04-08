@@ -92,6 +92,40 @@
     </form>
   </div>
 </div>
+<div id="loading-overlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+  <span class="text-white text-xl">Cargando...</span>
+</div>
+
+<script>
+  setTimeout(() => {
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      successMessage.addEventListener('transitionend', () => {
+        window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+      });
+    }
+
+    const errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      errorMessage.addEventListener('transitionend', () => {
+        // Optionally redirect on error too, or just fade it
+        // window.location.href = "<?= WEB_ROOT ?>/tasks/add";
+      });
+    }
+  }, 1500);
+</script>
+
+<script>
+  setTimeout(() => {
+  const overlay = document.getElementById('loading-overlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+
+  window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+}, 1500);
+
 
      
 

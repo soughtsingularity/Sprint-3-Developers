@@ -170,3 +170,223 @@
 (
 )
 
+[08-Apr-2025 11:11:14 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:11:30 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:12:07 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:13:46 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:13:58 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:14:07 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:14:28 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:31:35 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:32:23 Europe/Madrid] Error: No se encontraron tareas con el nombre: Ramon
+[08-Apr-2025 11:32:23 Europe/Madrid] Error loading tasks list: No se encontraron tareas con el nombre: Ramon en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/app/controllers/TaskController.php línea 33
+[08-Apr-2025 11:32:32 Europe/Madrid] Error: No se encontraron tareas con el nombre: Ramon
+[08-Apr-2025 11:32:32 Europe/Madrid] Error loading tasks list: No se encontraron tareas con el nombre: Ramon en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/app/controllers/TaskController.php línea 33
+[08-Apr-2025 12:02:12 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+

@@ -93,6 +93,29 @@
     </div>
   </div>
 
+</script>
+
+  <script>
+  setTimeout(() => {
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      successMessage.addEventListener('transitionend', () => {
+        window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+      });
+    }
+
+    const errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      errorMessage.addEventListener('transitionend', () => {
+        // Optionally redirect on error too, or just fade it
+        // window.location.href = "<?= WEB_ROOT ?>/tasks/add";
+      });
+    }
+  }, 2000);
+</script>
+
 
 
 

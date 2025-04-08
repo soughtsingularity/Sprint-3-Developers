@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Tarea</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+
 </head>
 <body class="bg-gray-900 text-gray-200 min-h-screen">
 
@@ -24,18 +27,18 @@
       </button>
 
       <form action="<?= $this->baseUrl() ?>/tasks/list" method="POST" class="flex items-center">
-    <div class="flex-1 max-w-md">
-        <input 
-            type="text" 
-            name="taskName"
-            placeholder="Buscar tarea" 
-            class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
-            required>
-    </div>
-    <button type="submit" class="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-        Buscar
-    </button>
-</form>
+        <div class="flex-1 max-w-md">
+            <input 
+                type="text" 
+                name="taskName"
+                placeholder="Buscar tarea" 
+                class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none"
+                required>
+        </div>
+        <button type="submit" class="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
+          Buscar
+        </button>
+    </form>
     </div>
   </header>
 
