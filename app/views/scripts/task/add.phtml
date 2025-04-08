@@ -19,7 +19,7 @@
       <h1 class="text-3xl font-bold text-gray-100">Añadir Nueva Tarea</h1>
     </div>
 
-    <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
+    <form action="<?= $this->baseUrl() ?>/tasks/save" method="POST">
       <div class="mb-4">
         <label class="block text-gray-400">Nombre de la tarea</label>
         <input 
@@ -74,7 +74,7 @@
             </option>
           <?php endforeach; ?>
         </select>
-        <!-- Campo oculto para capturar el email -->
+
         <input type="hidden" id="user" name="user" value="">
       </div>
 

@@ -23,7 +23,7 @@ class Router
 			if (!$routeFound || $controller == null || $action == null) {
 				error_log("Error: Ruta no definida en " . __FILE__ . " línea " . __LINE__);
 				$_SESSION['init_error_message'] = "Ruta no definida.";
-				header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+				header("Location: " . WEB_ROOT . "/home/login?error=1");
 				exit();
 			}
 	
@@ -33,7 +33,7 @@ class Router
 			if (strpos($e->getMessage(), "Tipo de repositorio no válido") !== false) {
 				error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
 				$_SESSION['init_error_message'] = "Error al iniciar la aplicación.";
-				header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+				header("Location: " . WEB_ROOT . "/home/login?error=1");
 				exit();
 			}
 	

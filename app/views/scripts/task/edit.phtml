@@ -19,7 +19,7 @@
       <h1 class="text-3xl font-bold text-gray-100">Editar Tarea</h1>
     </div>
 
-    <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
+    <form action="<?= $this->baseUrl() ?>/tasks/save" method="POST">
       <!-- Campo oculto para el ID si existe -->
       <input type="hidden" name="id" 
         value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : (isset($this->task['_id']) ? htmlspecialchars((string)$this->task['_id']) : ''); ?>">
