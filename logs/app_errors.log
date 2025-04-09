@@ -1,3 +1,392 @@
 [COMMENT] Este log corresponde a los errores de la aplicación, si los errores no se registran correctamente es necesario eliminar esta linea
 
 
+[08-Apr-2025 10:37:58 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:38:04 Europe/Madrid] Error: Error: Tipo de repositorio no válido en settings.ini en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 34
+[08-Apr-2025 10:50:13 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Error: Tipo de repositorio no válido en settings.ini en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 34
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:45 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:46 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:50:51 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:51:21 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:15 Europe/Madrid] Error: Error: Tipo de repositorio no válido en settings.ini en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 34
+[08-Apr-2025 10:52:15 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:15 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:15 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:16 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:17 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:22 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:52:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:53:52 Europe/Madrid] Error: Ruta no definida en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 24
+[08-Apr-2025 10:53:58 Europe/Madrid] Error: Error: Tipo de repositorio no válido en settings.ini en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/lib/base/Router.php línea 34
+[08-Apr-2025 10:54:29 Europe/Madrid] Contenido actual del JSON: Array
+(
+)
+
+[08-Apr-2025 11:11:14 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:11:30 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:12:07 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:13:46 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:13:58 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:14:07 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:14:28 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:31:35 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+
+[08-Apr-2025 11:32:23 Europe/Madrid] Error: No se encontraron tareas con el nombre: Ramon
+[08-Apr-2025 11:32:23 Europe/Madrid] Error loading tasks list: No se encontraron tareas con el nombre: Ramon en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/app/controllers/TaskController.php línea 33
+[08-Apr-2025 11:32:32 Europe/Madrid] Error: No se encontraron tareas con el nombre: Ramon
+[08-Apr-2025 11:32:32 Europe/Madrid] Error loading tasks list: No se encontraron tareas con el nombre: Ramon en /home/teqkat/teqkat/Code/Etapa_I/Cursos/ITAcademy/Entregas/Sprint-3/Sprint-3-Developers/Sprint-3-Developers/app/controllers/TaskController.php línea 33
+[08-Apr-2025 12:02:12 Europe/Madrid] Contenido actual del JSON: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [email] => teqkat@gmail.com
+        )
+
+    [1] => Array
+        (
+            [id] => 2
+            [email] => sfdfds@gmail.com
+        )
+
+    [2] => Array
+        (
+            [id] => 3
+            [email] => socketserious@gmail.com
+        )
+
+    [3] => Array
+        (
+            [id] => 4
+            [email] => ramonoliverbarcelona@gmail.com
+        )
+
+)
+

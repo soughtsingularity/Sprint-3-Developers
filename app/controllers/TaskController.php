@@ -11,6 +11,7 @@ class TaskController extends Controller {
     }
 
     public function listAction() {
+        
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskName']) && !empty(trim($_POST['taskName']))) {
                 $taskName = trim($_POST['taskName']);
@@ -19,6 +20,7 @@ class TaskController extends Controller {
     
                 if ($tasks) {
                     $this->view->tasks = $tasks;
+
                 } else {
 
                     throw new Exception("No se encontraron tareas con el nombre: " . htmlspecialchars($taskName));
@@ -27,6 +29,7 @@ class TaskController extends Controller {
                 $this->view->tasks = $this->taskRepository->getAll();
             }
         } catch (Exception $e) {
+
             error_log("Error loading tasks list: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
     
             if ($e->getMessage() === "No se encontraron tareas con el nombre: " . htmlspecialchars($taskName)) {
@@ -35,7 +38,7 @@ class TaskController extends Controller {
                 $_SESSION['error_message'] = "Hubo un problema al cargar las tareas";
             }
     
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }
@@ -50,22 +53,33 @@ class TaskController extends Controller {
             if($userRepository){
                 
                 $this->view->users = $userRepository->getAll();
+
             }else{
-                throw new Exception("Error obteniendo usuarios del repositorio");
+                throw new Exception("Error inicializando el repositorio");
             }
 
         }catch(Exception $e){
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "Error cargando lista de tareas";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/add?error=true");
             return null;
         }
     }
 
     public function editAction() {
+
         try {
+
             $userRepository = UserRepositoryFactory::create();
-            $this->view->users = $userRepository->getAll();
+
+            if($userRepository){
+
+                $this->view->users = $userRepository->getAll();
+
+            }else{
+
+                throw new Exception("Error inicializando el repositorio");
+            }
             
             $id = $_GET['id'] ?? null;
     
@@ -73,7 +87,6 @@ class TaskController extends Controller {
                 throw new \Exception("ID de tarea no proporcionado.");
             }
     
-            
             if (preg_match('/^[0-9a-fA-F]{24}$/', $id)) {
                 $taskId = new \MongoDB\BSON\ObjectId($id);
             } elseif (is_numeric($id)) {
@@ -83,18 +96,19 @@ class TaskController extends Controller {
             }
     
             $taskRepository = TaskRepositoryFactory::create();
-            $task = $taskRepository->getById($taskId);
-    
-            if (!$task) {
-                throw new \Exception("No se encontró la tarea.");
-            }
-    
-            $this->view->task = $task;
+
+            if($taskRepository){
+
+                $this->view->task = $taskRepository->getById($taskId);
+
+            }else{
+                throw new Exception("Error al inicializar el repositorio");
+            }   
     
         } catch (\Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "Hubo un problema al obtener la tarea.";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }
@@ -102,20 +116,29 @@ class TaskController extends Controller {
 
     public function saveAction() {
         try {
+
             $taskData = [
                 'id' => isset($_POST['id']) ? 
                     (preg_match('/^[0-9a-fA-F]{24}$/', $_POST['id']) ? new \MongoDB\BSON\ObjectId($_POST['id']) : $_POST['id']) 
                     : null,
                 'name' => $_POST['name'] ?? null,
                 'status' => $_POST['status'] ?? null,
-                'startDate' => $_POST['startDate'] ?? null,
-                'endDate' => $_POST['endDate'] ?? null,
+                'start_date' => $_POST['start_date'] ?? null,
+                'end_date' => $_POST['end_date'] ?? null,
                 'user' => $_POST['user'] ?? null,
-                'userId' => $_POST['userId'] ?? null,
+                'user_id' => $_POST['user_id'] ?? null,
             ];
             
             $taskRepository = TaskRepositoryFactory::create();
-            $result = $taskRepository->save($taskData);
+
+            if($taskRepository){
+
+                $result = $taskRepository->save($taskData);
+
+            }else{
+                throw new Exception("Error al inicializar el repositorio");
+            }
+            
     
             $isUpdate = isset($taskData['id']) && !empty($taskData['id']);
     
@@ -125,8 +148,8 @@ class TaskController extends Controller {
                     : "Tarea creada correctamente.";
                 
                 $redirectUrl = $isUpdate
-                    ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true"
-                    : WEB_ROOT . "/index.php/tasks/add?success=true";
+                    ? WEB_ROOT . "/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true"
+                    : WEB_ROOT . "/tasks/add?success=true";
 
             } else {
                 
@@ -139,15 +162,14 @@ class TaskController extends Controller {
     
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-    
-            $_SESSION['error_message'] = isset($taskData['id']) && !empty($taskData['id'])
-                ? "Hubo un problema al actualizar la tarea."
-                : "Hubo un problema al crear la tarea.";
-    
+        
+            $_SESSION['error_message'] = $e->getMessage();
+        
             $redirectUrl = isset($taskData['id']) && !empty($taskData['id'])
-                ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
-                : WEB_ROOT . "/index.php/tasks/add?error=true";
+                ? WEB_ROOT . "/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
+                : WEB_ROOT . "/tasks/add?error=true";
         }
+        
     
         header("Location: " . $redirectUrl);
         exit();
@@ -156,6 +178,7 @@ class TaskController extends Controller {
     public function deleteAction() {
 
         try {
+
             $id = $_GET['id'] ?? null;
     
             if (!$id) {
@@ -175,7 +198,7 @@ class TaskController extends Controller {
     
             if ($result) {
                 $_SESSION['success_message'] = "Tarea eliminada correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/list?success=true");
+                header("Location: " . WEB_ROOT . "/tasks/list?success=true");
                 exit();
             } else {
                 throw new \Exception("No se pudo eliminar la tarea.");
@@ -184,7 +207,7 @@ class TaskController extends Controller {
         } catch (\Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "No se pudo eliminar la tarea.";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }

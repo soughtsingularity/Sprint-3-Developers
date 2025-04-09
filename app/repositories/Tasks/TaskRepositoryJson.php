@@ -80,9 +80,9 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
 
             TaskStatus::validate($data['status']);
 
-            if (!empty($data['startDate']) && !empty($data['endDate'])) {
-                $startDate = strtotime($data['startDate']);
-                $endDate = strtotime($data['endDate']);
+            if (!empty($data['start_date']) && !empty($data['end_date'])) {
+                $startDate = strtotime($data['start_date']);
+                $endDate = strtotime($data['end_date']);
     
                 if ($startDate > $endDate) {
                     throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
@@ -143,8 +143,8 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
                     'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
                         ? $statusMap[$task['status']] 
                         : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
+                    'start_date' => isset($task['start_date']) ? $task['start_date'] : 'Desconocido',
+                    'end_date' => isset($task['end_date']) ? $task['end_date'] : 'Desconocido',
                     'user' => isset($task['user']) ? $task['user'] : 'undefined',
                     'id' => isset($task['id']) ? $task['id'] : 'undefined'
                 ];
@@ -159,6 +159,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
     }
     
     public function getById($id) {
+
         try {
             $jsonData = file_get_contents($this->filePath);
             if ($jsonData === false) {
@@ -166,6 +167,7 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             }
     
             $data = json_decode($jsonData, true);
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
             }
@@ -173,12 +175,12 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             foreach ($data as $task) {
                 if (isset($task['id']) && $task['id'] == $id) {
                     return [
-                        'name' => isset($task['name']) ? $task['name'] : 'undefined',
-                        'status' => isset($task['status']) ? $task['status'] : 'undefined',
-                        'startDate' => isset($task['startDate']) ? $task['startDate'] : 'undefined',
-                        'dueDate' => isset($task['endDate']) ? $task['endDate'] : 'undefined',
-                        'user' => isset($task['user']) ? $task['user'] : 'undefined',
-                        'id' => isset($task['id']) ? $task['id'] : 'undefined'
+                        'name' => isset($task['name']) ? $task['name'] : 'Desconocido',
+                        'status' => isset($task['status']) ? $task['status'] : 'Desconocido',
+                        'start_date' => isset($task['start_date']) ? $task['start_date'] : 'Desconocido',
+                        'due_date' => isset($task['end_date']) ? $task['end_date'] : 'Desconocido',
+                        'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
+                        'id' => isset($task['id']) ? $task['id'] : 'Desconocido'
                     ];
                 }
             }
@@ -217,16 +219,16 @@ class TaskRepositoryJson implements TaskRepositoryInterface{
             $matchingTasks = [];
 
             foreach ($tasks as $item) {
-                if (isset($item['name']) && $item['name'] == $name) {
+                if (isset($item['name']) && stripos($item['name'], $name) !== false) {
                     $item['status'] = $statusMap[$item['status']] ?? 'Desconocido';
     
                     $matchingTasks[] = [
-                        'id' => $item['id'] ?? 'undefined',
-                        'name' => $item['name'] ?? 'undefined',
+                        'id' => $item['id'] ?? 'Desconocido',
+                        'name' => $item['name'] ?? 'Desconocido',
                         'status' => $item['status'],
-                        'startDate' => $item['startDate'] ?? 'undefined',
-                        'endDate' => $item['endDate'] ?? 'undefined',
-                        'user' => $item['user'] ?? 'undefined'
+                        'start_date' => $item['start_date'] ?? 'Desconocido',
+                        'end_date' => $item['end_date'] ?? 'Desconocido',
+                        'user' => $item['user'] ?? 'Desconocido'
                     ];
                 }
             }

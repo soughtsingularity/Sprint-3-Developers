@@ -44,9 +44,9 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
         try {
 
-            if (!empty($data['startDate']) && !empty($data['endDate'])) {
-                $startDate = strtotime($data['startDate']);
-                $endDate = strtotime($data['endDate']);
+            if (!empty($data['start_ate']) && !empty($data['end_date'])) {
+                $startDate = strtotime($data['start_date']);
+                $endDate = strtotime($data['end_date']);
     
                 if ($startDate > $endDate) {
                     throw new Exception("La fecha de inicio no puede ser posterior a la fecha de finalización.");
@@ -108,8 +108,8 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
                     'status' => isset($task['status']) && isset($statusMap[$task['status']]) 
                         ? $statusMap[$task['status']] 
                         : 'Desconocido',
-                    'startDate' => isset($task['startDate']) ? $task['startDate'] : 'Desconocido',
-                    'endDate' => isset($task['endDate']) ? $task['endDate'] : 'Desconocido',
+                    'start_date' => isset($task['start_date']) ? $task['start_date'] : 'Desconocido',
+                    'end_date' => isset($task['end_date']) ? $task['end_date'] : 'Desconocido',
                     'user' => isset($task['user']) ? $task['user'] : 'Desconocido',
                     'id' => isset($task['_id']) ? $task['_id'] : 'Desconocido'
                 ];
@@ -143,8 +143,9 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
 
     public function getByName($name) {
         try {
-            $cursor = $this->collection->find(['name' => $name]);
-    
+            $regex = new \MongoDB\BSON\Regex($name, 'i'); 
+
+            $cursor = $this->collection->find(['name' => $regex]);    
             $tasks = iterator_to_array($cursor);
     
             if (empty($tasks)) {
@@ -160,11 +161,11 @@ class TaskRepositoryMongodb implements TaskRepositoryInterface {
     
             return array_map(function($task) use ($statusMap) {
                 return [
-                    'id' => (string) $task['_id'],
-                    'name' => $task['name'],
+                    'id' => (string) $task['_id'] ?? 'Desconocido',
+                    'name' => $task['name'] ?? 'Desconocido',
                     'status' => $statusMap[$task['status']] ?? 'Desconocido',
-                    'startDate' => $task['startDate'] ?? 'Desconocido',
-                    'endDate' => $task['endDate'] ?? 'Desconocido',
+                    'start_date' => $task['start_date'] ?? 'Desconocido',
+                    'end_date' => $task['end_date'] ?? 'Desconocido',
                     'user' => $task['user'] ?? 'Desconocido'
                 ];
             }, $tasks);
