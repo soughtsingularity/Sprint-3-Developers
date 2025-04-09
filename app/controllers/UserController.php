@@ -22,17 +22,17 @@ class UserController extends Controller {
         
             if (isset($newUser) && $newUser) {
                 $_SESSION['success_message'] = "Usuario creado correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
+                header("Location: " . WEB_ROOT . "/home/login?success=1");
             } elseif ($newUser === false) {
                 $_SESSION['success_message'] = "Bienvenido {$email}.";
-                header("Location: " . WEB_ROOT . "/index.php/home/login?success=1");
+                header("Location: " . WEB_ROOT . "/home/login?success=1");
             }
             exit();
 
         }catch(Exception $e){
             error_log("Error al crear el usuario " . $e->getMessage());
             $_SESSION['error_message'] = "Error al crear el usuario";
-            header("Location: " . WEB_ROOT . "/index.php/home/login?error=1");
+            header("Location: " . WEB_ROOT . "/home/login?error=1");
 
         }
     }

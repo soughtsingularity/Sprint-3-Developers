@@ -23,11 +23,15 @@
         <?= $_SESSION['init_error_message']; ?>
       </div>
       <?php unset($_SESSION['init_error_message']); ?>
+
+      <div class="absolute top-10 flex justify-center w-full">
+        <canvas id="three-canvas" class="w-48 h-48"></canvas>
+      </div>
     <?php endif; ?>
 
     <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">Login</h1>
 
-    <form action="<?= $this->baseUrl() ?>/index.php/user/register" method="POST" class="space-y-6">
+    <form action="<?= $this->baseUrl() ?>/user/register" method="POST" class="space-y-6">
       <div>
         <input 
           type="email" 
@@ -45,24 +49,25 @@
   </div>
   
   <script>
-    // Ocultar mensaje de éxito y redirigir
-    setTimeout(() => {
-      const successMessage = document.getElementById('success-message');
-      if (successMessage) {
-        successMessage.style.display = 'none';
-        window.location.href = "<?= WEB_ROOT; ?>/index.php/tasks/list";
-      }
-    }, 2000);
+  setTimeout(() => {
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      successMessage.addEventListener('transitionend', () => {
+        window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+      });
+    }
 
-    // Ocultar mensaje de error de inicialización y redirigir a Home
-    setTimeout(() => {
-      const initErrorMessage = document.getElementById('init-error-message');
-      if (initErrorMessage) {
-        initErrorMessage.style.display = 'none';
-        window.location.href = "<?= WEB_ROOT; ?>/";
-      }
-    }, 2000);
-  </script>
+    const errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      errorMessage.addEventListener('transitionend', () => {
+        // Optionally redirect on error too, or just fade it
+        // window.location.href = "<?= WEB_ROOT ?>/tasks/add";
+      });
+    }
+  }, 1500);
+</script>
 </body>
 </html>
 

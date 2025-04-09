@@ -1,3 +1,18 @@
 [
-    
+    {
+        "id": 1,
+        "email": "teqkat@gmail.com"
+    },
+    {
+        "id": 2,
+        "email": "sfdfds@gmail.com"
+    },
+    {
+        "id": 3,
+        "email": "socketserious@gmail.com"
+    },
+    {
+        "id": 4,
+        "email": "ramonoliverbarcelona@gmail.com"
+    }
 ]

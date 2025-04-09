@@ -38,7 +38,7 @@ class TaskController extends Controller {
                 $_SESSION['error_message'] = "Hubo un problema al cargar las tareas";
             }
     
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }
@@ -61,7 +61,7 @@ class TaskController extends Controller {
         }catch(Exception $e){
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "Error cargando lista de tareas";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/add?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/add?error=true");
             return null;
         }
     }
@@ -108,7 +108,7 @@ class TaskController extends Controller {
         } catch (\Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "Hubo un problema al obtener la tarea.";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }
@@ -123,10 +123,10 @@ class TaskController extends Controller {
                     : null,
                 'name' => $_POST['name'] ?? null,
                 'status' => $_POST['status'] ?? null,
-                'startDate' => $_POST['startDate'] ?? null,
-                'endDate' => $_POST['endDate'] ?? null,
+                'start_date' => $_POST['start_date'] ?? null,
+                'end_date' => $_POST['end_date'] ?? null,
                 'user' => $_POST['user'] ?? null,
-                'userId' => $_POST['userId'] ?? null,
+                'user_id' => $_POST['user_id'] ?? null,
             ];
             
             $taskRepository = TaskRepositoryFactory::create();
@@ -148,8 +148,8 @@ class TaskController extends Controller {
                     : "Tarea creada correctamente.";
                 
                 $redirectUrl = $isUpdate
-                    ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true"
-                    : WEB_ROOT . "/index.php/tasks/add?success=true";
+                    ? WEB_ROOT . "/tasks/edit?id=" . urlencode($taskData['id']) . "&success=true"
+                    : WEB_ROOT . "/tasks/add?success=true";
 
             } else {
                 
@@ -162,15 +162,14 @@ class TaskController extends Controller {
     
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-    
-            $_SESSION['error_message'] = isset($taskData['id']) && !empty($taskData['id'])
-                ? "Hubo un problema al actualizar la tarea."
-                : "Hubo un problema al crear la tarea.";
-    
+        
+            $_SESSION['error_message'] = $e->getMessage();
+        
             $redirectUrl = isset($taskData['id']) && !empty($taskData['id'])
-                ? WEB_ROOT . "/index.php/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
-                : WEB_ROOT . "/index.php/tasks/add?error=true";
+                ? WEB_ROOT . "/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
+                : WEB_ROOT . "/tasks/add?error=true";
         }
+        
     
         header("Location: " . $redirectUrl);
         exit();
@@ -199,7 +198,7 @@ class TaskController extends Controller {
     
             if ($result) {
                 $_SESSION['success_message'] = "Tarea eliminada correctamente.";
-                header("Location: " . WEB_ROOT . "/index.php/tasks/list?success=true");
+                header("Location: " . WEB_ROOT . "/tasks/list?success=true");
                 exit();
             } else {
                 throw new \Exception("No se pudo eliminar la tarea.");
@@ -208,7 +207,7 @@ class TaskController extends Controller {
         } catch (\Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
             $_SESSION['error_message'] = "No se pudo eliminar la tarea.";
-            header("Location: " . WEB_ROOT . "/index.php/tasks/list?error=true");
+            header("Location: " . WEB_ROOT . "/tasks/list?error=true");
             exit();
         }
     }

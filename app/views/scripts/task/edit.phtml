@@ -19,7 +19,7 @@
       <h1 class="text-3xl font-bold text-gray-100">Editar Tarea</h1>
     </div>
 
-    <form action="<?= $this->baseUrl() ?>/index.php/tasks/save" method="POST">
+    <form action="<?= $this->baseUrl() ?>/tasks/save" method="POST">
       <!-- Campo oculto para el ID si existe -->
       <input type="hidden" name="id" 
         value="<?= isset($this->task['id']) ? htmlspecialchars($this->task['id']) : (isset($this->task['_id']) ? htmlspecialchars((string)$this->task['_id']) : ''); ?>">
@@ -51,7 +51,7 @@
         <label class="block text-gray-400">Fecha de inicio</label>
         <input 
           type="date" 
-          name="startDate" 
+          name="start_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -60,14 +60,14 @@
         <label class="block text-gray-400">Fecha límite</label>
         <input 
           type="date" 
-          name="endDate" 
+          name="end_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
 
       <div class="mb-4">
         <label class="block text-gray-400">Asignado a</label>
-        <select id="userSelect" name="userId" 
+        <select id="userSelect" name="user_id" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" required>
           <option value="">Seleccione un usuario</option>
           <?php foreach ($this->users as $user): ?>
@@ -96,3 +96,32 @@
   </div>
 </div>
 
+<script>
+  setTimeout(() => {
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      successMessage.addEventListener('transitionend', () => {
+        window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+      });
+    }
+
+    const errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      errorMessage.addEventListener('transitionend', () => {
+        // Optionally redirect on error too, or just fade it
+        // window.location.href = "<?= WEB_ROOT ?>/tasks/add";
+      });
+    }
+  }, 1500);
+</script>
+
+<script>
+  setTimeout(() => {
+  const overlay = document.getElementById('loading-overlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+
+  window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+}, 1500);
