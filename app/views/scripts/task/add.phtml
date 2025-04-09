@@ -46,7 +46,7 @@
         <label class="block text-gray-400">Fecha de inicio</label>
         <input 
           type="date" 
-          name="startDate" 
+          name="start_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -55,7 +55,7 @@
         <label class="block text-gray-400">Fecha límite</label>
         <input 
           type="date" 
-          name="endDate" 
+          name="end_date" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
       </div>
@@ -64,7 +64,7 @@
         <label class="block text-gray-400">Asignado a</label>
         <select 
           id="userSelect" 
-          name="userId" 
+          name="user_id" 
           class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white" 
           required>
           <option value="">Seleccione un usuario</option>
@@ -97,24 +97,27 @@
 </div>
 
 <script>
-  setTimeout(() => {
-    const successMessage = document.getElementById('success-message');
-    if (successMessage) {
-      successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
-      successMessage.addEventListener('transitionend', () => {
-        window.location.href = "<?= WEB_ROOT ?>/tasks/list";
-      });
-    }
+setTimeout(() => {
+  const successMessage = document.getElementById('success-message');
+  if (successMessage) {
+    successMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+    
+    successMessage.addEventListener('transitionend', () => {
+      successMessage.remove(); 
+      window.location.href = "<?= WEB_ROOT ?>/tasks/list";
+    });
+  }
 
-    const errorMessage = document.getElementById('error-message');
-    if (errorMessage) {
-      errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
-      errorMessage.addEventListener('transitionend', () => {
-        // Optionally redirect on error too, or just fade it
-        // window.location.href = "<?= WEB_ROOT ?>/tasks/add";
-      });
-    }
-  }, 1500);
+  const errorMessage = document.getElementById('error-message');
+  if (errorMessage) {
+    errorMessage.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+
+    errorMessage.addEventListener('transitionend', () => {
+      errorMessage.remove(); 
+    });
+  }
+}, 1500);
+
 </script>
 
 <script>

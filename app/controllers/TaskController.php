@@ -123,10 +123,10 @@ class TaskController extends Controller {
                     : null,
                 'name' => $_POST['name'] ?? null,
                 'status' => $_POST['status'] ?? null,
-                'startDate' => $_POST['startDate'] ?? null,
-                'endDate' => $_POST['endDate'] ?? null,
+                'start_date' => $_POST['start_date'] ?? null,
+                'end_date' => $_POST['end_date'] ?? null,
                 'user' => $_POST['user'] ?? null,
-                'userId' => $_POST['userId'] ?? null,
+                'user_id' => $_POST['user_id'] ?? null,
             ];
             
             $taskRepository = TaskRepositoryFactory::create();
@@ -162,15 +162,14 @@ class TaskController extends Controller {
     
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage() . " en " . __FILE__ . " línea " . __LINE__);
-    
-            $_SESSION['error_message'] = isset($taskData['id']) && !empty($taskData['id'])
-                ? "Hubo un problema al actualizar la tarea."
-                : "Hubo un problema al crear la tarea.";
-    
+        
+            $_SESSION['error_message'] = $e->getMessage();
+        
             $redirectUrl = isset($taskData['id']) && !empty($taskData['id'])
                 ? WEB_ROOT . "/tasks/edit?id=" . urlencode($taskData['id']) . "&error=true"
                 : WEB_ROOT . "/tasks/add?error=true";
         }
+        
     
         header("Location: " . $redirectUrl);
         exit();
